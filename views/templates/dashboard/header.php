@@ -24,13 +24,13 @@
                 </li>
                 <hr class="mb-0 mt-2 py-3">
                 <li>
-                    <a href="#"><i class="fa-solid fa-truck-plane pe-2"></i>Catégories</a>
+                    <a href="#" class="sidebar__nav--tabs"><i class="fa-solid fa-truck-plane pe-2"></i>Catégories</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa-solid fa-cogs pe-2"></i>Véhicules</a>
+                    <a href="#" class="sidebar__nav--tabs"><i class="fa-solid fa-cogs pe-2"></i>Véhicules</a>
                 </li>
                 <li>
-                    <a href="#"><i class="fa-solid fa-road pe-2"></i>Réservations</a>
+                    <a href="#" class="sidebar__nav--tabs"><i class="fa-solid fa-road pe-2"></i>Réservations</a>
                 </li>
             </ul>
         </div>
