@@ -8,8 +8,8 @@
                 <div class="card bg-light mb-3" style="max-width: 20rem;">
                     <div class="card-body p-5">
                         <!-- form -->
-                        <form method="POST" novalidate>
-                            <div class="form-group">
+                        <form method="POST" action="/controllers/dashboard/categories/add-ctrl.php">
+                        <div class="form-group">
                                 <div class="text-success fw-bold">
                                     <?= $result ?? '' ?>
                                 </div>
