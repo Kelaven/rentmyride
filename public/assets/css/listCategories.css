@@ -8,8 +8,10 @@
 }
 .list-group-item{
     position: relative;
-    border-bottom: 1px solid !important;
     padding-left: 0px;
+}
+.list-group-item--border{
+    border-bottom: 1px solid !important;
 }
 .logos{
     position: absolute;

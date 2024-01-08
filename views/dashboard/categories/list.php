@@ -19,10 +19,14 @@
                     </div>
                     <div class="card-body p-5">
                         <ul class="list-group list-group-flush">
-                        <?php  
+                            <li class="list-group-item fw-bold mb-2">
+                                Nom :
+                            </li>
+                            <?php
                             foreach ($results as $result) { ?>
-                                <li class="list-group-item">
-                                    <span class="fw-bold">Nom de la catégorie :</span> <?= $result['name'] ?> <span class="logos"><i class="fa-solid fa-pen-to-square"></i> <i class="fa-solid fa-trash"></i></span>
+
+                                <li class="list-group-item list-group-item--border">
+                                    <?= $result['name'] ?> <span class="logos"><i class="fa-solid fa-pen-to-square"></i> <i class="fa-solid fa-trash"></i></span>
                                 </li>
                             <?php } ?>
 
