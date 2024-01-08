@@ -4,11 +4,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Rent my Ride</title>
+    <title>
+        Rent my Ride - <?= $title ?? '' ?>
+    </title>
     <!-- bootswatch -->
     <link href="/public/assets/framework/bootstrap.min.css" rel="stylesheet">
     <!-- mon style -->
     <link rel="stylesheet" href="/public/assets/css/header.css">
+    <?php
+    if (isset($css)) {
+    ?>
+        <link rel="stylesheet" href="/public/assets/css/<?= $css ?>">
+    <?php } ?>
+    <?php
+    if (isset($css)) {
+    ?>
+        <link rel="stylesheet" href="/public/assets/css/<?= $css ?>">
+    <?php } ?>
+
 
 
 </head>

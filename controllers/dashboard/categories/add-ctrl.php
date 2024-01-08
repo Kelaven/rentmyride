@@ -4,54 +4,51 @@
 // ! fichier init
 
 require_once __DIR__ . '/../../../config/init.php';
+require_once __DIR__ . '/../../../models/Category.php';
 
 
 
 
 
-// ! Si le formulaire est envoyé
-if ($_SERVER["REQUEST_METHOD"] == "POST") {
-    // * nettoyage et validation du form
-    $error = [];
-    // pour ajouter une catégorie :
-    $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS); // filtre de nettoyage
-    $is_name_ok = filter_var($name, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => '/' . REGEX_CATEGORY . '/'))); // filtre de validation
-    if (!$is_name_ok) {
-        $error['name'] = 'Le nom de la catégorie doit contenir 2 à 30 caractères alphabétiques.';
+try {
+    $css = 'addCategories.css';
+    $title = 'Ajout d\'une catégorie';
+
+    // ! Si le formulaire est envoyé
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // * nettoyage et validation du form
+        $error = [];
+        // pour ajouter une catégorie :
+        $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS); // filtre de nettoyage
+        if (empty($name)) {
+            $error['name'] = 'Le champ ne peut pas être vide';
+        } else {
+            $is_name_ok = filter_var($name, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => '/' . REGEX_CATEGORY . '/'))); // filtre de validation
+            if (!$is_name_ok) {
+                $error['name'] = 'Le nom de la catégorie doit contenir 2 à 30 caractères alphabétiques.';
+            }
+        }
+
+
+        // * connexion à la BDD pour y insérer la valeur entrée
+        // https://www.pierre-giraud.com/php-mysql-apprendre-coder-cours/requete-preparee/ 
+
+
+
+        if (empty($error)) {
+            $category = new Category();
+            $category->setName($name);
+            $result = $category->insert();
+
+            if ($result) {
+                $msg = 'La donnée a bien été insérée !';
+            } else {
+                $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
+            }
+        }
     }
-    if ($error == []) {
-        $result = 'La donnée a bien été envoyée !';
-    }
-
-
-
-
-
-    // * connexion à la BDD pour y insérer la valeur entrée
-    // https://www.pierre-giraud.com/php-mysql-apprendre-coder-cours/requete-preparee/ 
-
-    $dsn = 'mysql:dbname=rentmyride;host=localhost';
-    $user = 'rentmyride_admin';
-    $password = '2t9#csRh$%uQ^wWPaFTb';
-
-    try {
-        $objetPdo = new PDO($dsn, $user, $password);
-
-        $name = $_POST['name'];
-
-        $sth = $objetPdo->prepare("
-        INSERT INTO
-        categories(name)
-        VALUES (:name)
-        ");
-
-        $sth->execute(array(
-            ':name' => $name
-        ));
-
-    } catch (PDOException $e) {
-        echo "Erreur : " . $e->getMessage();
-    }
+} catch (Throwable $e) {
+    echo "Erreur : " . $e->getMessage();
 }
 
 

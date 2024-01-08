@@ -1,0 +1,17 @@
+#container__creatList, #container__readList{
+    display: flex;
+    justify-content: end;
+}
+
+.card{
+    min-width: 60vw;
+}
+.list-group-item{
+    position: relative;
+    border-bottom: 1px solid !important;
+    padding-left: 0px;
+}
+.logos{
+    position: absolute;
+    right: 0px;
+}
