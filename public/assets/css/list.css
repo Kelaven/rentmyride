@@ -1,0 +1,13 @@
+#container__creatList{
+    display: flex;
+    justify-content: end;
+}
+
+#container__readList{
+    display: flex;
+    justify-content: end;
+}
+
+.card{
+    min-width: 60vw;
+}
