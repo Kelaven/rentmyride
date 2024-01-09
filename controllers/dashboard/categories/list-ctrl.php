@@ -10,14 +10,14 @@ require_once __DIR__ . '/../../../models/Category.php';
 
 
 try {
-    // modification du header
+    // * modification du header
     $css = 'listCategories.css';
     $title = 'Consultation des catégories';
 
-    // pour afficher les catégories
-    $list = new Category();
-    $results = $list->getAll();
-    
+    // * pour afficher les catégories
+    // $list = new Category(); // on a pas besoin d'hydrater l'objet donc on utilise la méthode static
+    // $results = $list->getAll();
+    $results = Category::getAll();
 
 } catch (\Throwable $th) {
     echo "Erreur : " . $th->getMessage();

@@ -26,7 +26,7 @@
                             foreach ($results as $result) { ?>
 
                                 <li class="list-group-item list-group-item--border">
-                                    <?= $result['name'] ?> <span class="logos"><a href="/controllers/dashboard/categories/update-ctrl.php"><i class="fa-solid fa-pen-to-square pe-5"></i></a> <i class="fa-solid fa-trash"></i></span>
+                                    <?= $result->name ?> <span class="logos"><a href="/controllers/dashboard/categories/update-ctrl.php"><i class="fa-solid fa-pen-to-square pe-5"></i></a> <i class="fa-solid fa-trash"></i></span>
                                 </li>
                             <?php } ?>
 
