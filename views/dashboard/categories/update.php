@@ -11,8 +11,8 @@
                                 <div class="text-info fw-bold">
                                     <?= $msg ?? '' ?>
                                 </div>
-                                <label class="col-form-label mt-4" for="name">Ajouter une nouvelle catégorie</label>
-                                <input type="text" class="form-control" placeholder="Exemple : Voitures" id="name" name="name" minlength="2" maxlength="30" required>
+                                <label class="col-form-label mt-4" for="name">Modifier le nom d'une catégorie</label>
+                                <input type="text" class="form-control" placeholder="Exemple : Voitures de Formule 1" id="name" name="name" minlength="2" maxlength="30" required>
                                 <small class="text-danger"><?= $error['name'] ?? '' ?></small>
                             </div>
                             <button type="submit" class="btn btn-primary mt-5">Valider</button>

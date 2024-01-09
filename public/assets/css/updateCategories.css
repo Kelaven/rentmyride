@@ -1,0 +1,15 @@
+#container__form{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#container__form .card{
+    min-width: 50vw;
+}
+
+input::placeholder{
+    font-style: italic;
+    font-size: 0.9em;
+}

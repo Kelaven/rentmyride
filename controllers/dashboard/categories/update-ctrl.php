@@ -1,6 +1,5 @@
 <?php
 
-
 // ! fichier init
 
 require_once __DIR__ . '/../../../config/init.php';
@@ -11,10 +10,11 @@ require_once __DIR__ . '/../../../models/Category.php';
 
 
 try {
-    $css = 'addCategories.css';
-    $title = 'Ajout d\'une catégorie';
+    // modification du header
+    $css = 'updateCategories.css';
+    $title = 'Modification des catégories';
 
-    // ! Si le formulaire est envoyé
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // * nettoyage et validation du form
         $error = [];
@@ -30,26 +30,27 @@ try {
         }
 
 
-        // * connexion à la BDD pour y insérer la valeur entrée
-        // https://www.pierre-giraud.com/php-mysql-apprendre-coder-cours/requete-preparee/ 
 
 
 
         if (empty($error)) {
             $category = new Category();
-            $category->setName($name);
-            $result = $category->insert();
+            // $category->setName($name);
+            // $result = $category->insert();
 
             if ($result) {
-                $msg = 'La donnée a bien été insérée !';
+                $msg = 'La donnée a bien été modifiée !';
             } else {
-                $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
+                $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
             }
         }
     }
-} catch (Throwable $e) {
-    echo "Erreur : " . $e->getMessage();
+    
+
+} catch (\Throwable $th) {
+    echo "Erreur : " . $th->getMessage();
 }
+
 
 
 
@@ -58,5 +59,5 @@ try {
 // ! views
 
 include __DIR__ . '/../../../views/templates/dashboard/header.php';
-include __DIR__ . '/../../../views/dashboard/categories/add.php';
+include __DIR__ . '/../../../views/dashboard/categories/update.php';
 include __DIR__ . '/../../../views/templates/dashboard/footer.php';

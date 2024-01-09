@@ -1,7 +1,7 @@
 <?php
 
 require_once __DIR__ . '/../config/init.php';
-
+require_once __DIR__ . '/../helpers/Database.php';
 
 // ! création de la classe
 class Category
@@ -65,9 +65,14 @@ class Category
 
 
     // ! création de mes méthodes
-    public function insert()
+    /**
+     * méthode pour insérer les données
+     * @return [type]
+     */
+    public function insert() // méthode pour insérer les données
     {
-        $pdo = new PDO(DSN, USER, PASSWORD);
+        // $pdo = new PDO(DSN, USER, PASSWORD); // Voici une façon d'optimiser le code pour ne modifier les infos qu'à un endroit si besoin (voire éviter la répétition de code) : 
+        $pdo = Database::connect(); // on appelle une méthode static avec ::
 
         $sql = 'INSERT INTO
             `categories`(`name`)
@@ -83,9 +88,13 @@ class Category
         return $result;
     }
 
-    public function getAll()
+    /**
+     * méthode pour lire les données, retourne un tableau
+     * @return [type]
+     */
+    public function getAll() // méthode pour lire les données
     {
-        $pdo = new PDO(DSN, USER, PASSWORD);
+        $pdo = Database::connect();
 
         $sql = 'SELECT * FROM `categories`;';
 
@@ -93,8 +102,29 @@ class Category
 
         $sth->execute();
 
-        $result = $sth->fetchAll(); // récupération des résultats (on récupère tout en une seule fois)
+        $result = $sth->fetchAll(); // récupération des résultats sous forme de tableau (on récupère tout en une seule fois)
 
         return $result;
+    }
+
+    /**
+     * méthode pour retourner les données
+     * @return [type]
+     */
+    public function update() // méthode pour modifier les données
+    {
+        $pdo = Database::connect();
+
+        $sql = "UPDATE `categories`
+        SET `name`= 'Bateaux'
+        WHERE `id_category` = 15;";
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->execute();
+
+        $count = $sth->rowCount(); // compte le nombre d'entrées à modifier
+
+
     }
 }
