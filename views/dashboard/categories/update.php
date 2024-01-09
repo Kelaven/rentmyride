@@ -19,9 +19,7 @@
                                 minlength="2" 
                                 maxlength="30" 
                                 required
-                                value="<?=
-                                    $_GET['name']
-                                ?>" >
+                                value="" >
                                 <small class="text-danger"><?= $error['name'] ?? '' ?></small>
                             </div>
                             <button type="submit" class="btn btn-primary mt-5">Valider</button>

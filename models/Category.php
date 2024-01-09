@@ -131,8 +131,24 @@ class Category
         $count = $sth->rowCount(); // compte le nombre d'entrées à modifier
 
     }
+    public static function get(int $id):object|false // méthode pour update, afin de récupérer les infos de l'id sélectionné
+    {
+        // $id_category = $_GET['id_category'];
+        // var_dump($id_category);
 
+        $pdo = Database::connect();
 
+        $sql = 'SELECT * FROM `categories`
+        WHERE id_category = :id_category;';
 
+        $sth = $pdo->prepare($sql);
 
+        $sth->bindValue(':id_category', $id, PDO::PARAM_INT); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier
+
+        $result = $sth->execute();
+
+        $result = $sth->fetch(PDO::FETCH_OBJ); // pour récupérer les données de l'objet portant l'id. Le fetch recupère la première info uniquement (contrairement au fetchAll qui récupère tout)
+
+        return $result;
+    }
 }

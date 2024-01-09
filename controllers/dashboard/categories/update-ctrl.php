@@ -14,7 +14,18 @@ try {
     $css = 'updateCategories.css';
     $title = 'Modification des catégories';
 
-    
+    $id_category = intval(filter_input(INPUT_GET, 'id_category', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, comme ça s'il faut renvoyer false ça renvoie 0
+
+    $category = Category::get($id_category);
+    var_dump($category);
+    if (!$category) { // si le résultat retourné est false
+        header('Location: /controllers/dashboard/categories/list-ctrl.php');
+        die;
+    }
+
+
+
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // * nettoyage et validation du form
         $error = [];
@@ -34,26 +45,9 @@ try {
 
         if (empty($error)) {
 
-            $pdo = Database::connect();
 
-        // $sql = 'SELECT * FROM `categories`
-        //     WHERE id = :name';
 
-        // // $sql = "UPDATE `categories`
-        // // SET `name`= (:name)
-        // // WHERE `id_category` = 15;";
 
-        // $sth = $pdo->prepare($sql);
-
-        // $sth->bindValue(':name', $_POST['name'], PDO::PARAM_STR); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier (son id)
-
-        // $execute = $sth->execute();
-
-        // $updates = $sth->fetch(PDO::FETCH_OBJ);
-        // var_dump($updates);
-
-        $name = Category::getAll();
-        var_dump($name);
 
 
 
@@ -71,8 +65,6 @@ try {
 
 
     $categories = Category::getAll();
-    
-
 } catch (\Throwable $th) {
     echo "Erreur : " . $th->getMessage();
 }
