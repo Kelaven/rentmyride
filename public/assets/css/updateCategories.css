@@ -13,3 +13,7 @@ input::placeholder{
     font-style: italic;
     font-size: 0.9em;
 }
+
+button:hover{
+    background-color: #999 !important;
+}

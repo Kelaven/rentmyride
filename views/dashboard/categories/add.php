@@ -6,7 +6,7 @@
                 <div class="card bg-light mb-3" style="max-width: 20rem;">
                     <div class="card-body p-5">
                         <!-- form -->
-                        <form method="POST" novalidate>
+                        <form method="POST">
                             <div class="form-group">
                                 <div class="text-info fw-bold">
                                     <?= $msg ?? '' ?>

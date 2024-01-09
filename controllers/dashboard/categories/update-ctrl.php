@@ -45,6 +45,11 @@ try {
             }
         }
     }
+
+
+
+
+    $categories = Category::getAll();
     
 
 } catch (\Throwable $th) {

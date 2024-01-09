@@ -23,15 +23,12 @@
                                 Nom :
                             </li>
                             <?php
-                            foreach ($results as $result) { ?>
+                            foreach ($categories as $category) { ?>
 
                                 <li class="list-group-item list-group-item--border">
-                                    <?= $result->name ?> <span class="logos"><a href="/controllers/dashboard/categories/update-ctrl.php"><i class="fa-solid fa-pen-to-square pe-5"></i></a> <i class="fa-solid fa-trash"></i></span>
+                                    <?= $category->name ?> <span class="logos"><a href="/controllers/dashboard/categories/update-ctrl.php" data-bs-toggle="tooltip" data-bs-title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a> <a href="#" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a></span>
                                 </li>
                             <?php } ?>
-
-
-
                         </ul>
                     </div>
                 </div>

@@ -17,7 +17,7 @@ try {
     // * pour afficher les catégories
     // $list = new Category(); // on a pas besoin d'hydrater l'objet donc on utilise la méthode static
     // $results = $list->getAll();
-    $results = Category::getAll();
+    $categories = Category::getAll();
 
 } catch (\Throwable $th) {
     echo "Erreur : " . $th->getMessage();

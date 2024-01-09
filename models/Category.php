@@ -121,10 +121,11 @@ class Category
 
         $sth = $pdo->prepare($sql);
 
-        $sth->execute();
+        $sth->bindValue(':name', $this->getName()); // car l'utilisateur rentre de nouveau une donnée
+
+        $result = $sth->execute();
 
         $count = $sth->rowCount(); // compte le nombre d'entrées à modifier
-
 
     }
 }

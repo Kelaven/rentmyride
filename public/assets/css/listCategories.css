@@ -2,7 +2,6 @@
     display: flex;
     justify-content: end;
 }
-
 .card{
     min-width: 60vw;
 }
@@ -16,4 +15,12 @@
 .logos{
     position: absolute;
     right: 0px;
+    width: 10vw;
+    display: flex;
+    justify-content: space-between;
+    bottom: 8px;
+}
+i:hover{
+    color: #999;
+    scale: 1.2;
 }

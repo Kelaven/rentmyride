@@ -12,7 +12,16 @@
                                     <?= $msg ?? '' ?>
                                 </div>
                                 <label class="col-form-label mt-4" for="name">Modifier le nom d'une catégorie</label>
-                                <input type="text" class="form-control" placeholder="Exemple : Voitures de Formule 1" id="name" name="name" minlength="2" maxlength="30" required>
+                                <input type="text" class="form-control" 
+                                placeholder="Exemple : Voitures de Formule 1" 
+                                id="name" 
+                                name="name" 
+                                minlength="2" 
+                                maxlength="30" 
+                                required
+                                value="<?php
+
+                                ?>" >
                                 <small class="text-danger"><?= $error['name'] ?? '' ?></small>
                             </div>
                             <button type="submit" class="btn btn-primary mt-5">Valider</button>
