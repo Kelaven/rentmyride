@@ -17,7 +17,7 @@ try {
     $id_category = intval(filter_input(INPUT_GET, 'id_category', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, comme ça s'il faut renvoyer false ça renvoie 0
 
     $category = Category::get($id_category);
-    var_dump($category);
+    // var_dump($category);
     if (!$category) { // si le résultat retourné est false
         header('Location: /controllers/dashboard/categories/list-ctrl.php');
         die;
