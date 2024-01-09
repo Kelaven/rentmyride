@@ -18,7 +18,6 @@ try {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // * nettoyage et validation du form
         $error = [];
-        // pour ajouter une catégorie :
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS); // filtre de nettoyage
         if (empty($name)) {
             $error['name'] = 'Le champ ne peut pas être vide';
@@ -34,15 +33,37 @@ try {
 
 
         if (empty($error)) {
-            $category = new Category();
-            // $category->setName($name);
-            // $result = $category->insert();
 
-            if ($result) {
-                $msg = 'La donnée a bien été modifiée !';
-            } else {
-                $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
-            }
+            $pdo = Database::connect();
+
+        // $sql = 'SELECT * FROM `categories`
+        //     WHERE id = :name';
+
+        // // $sql = "UPDATE `categories`
+        // // SET `name`= (:name)
+        // // WHERE `id_category` = 15;";
+
+        // $sth = $pdo->prepare($sql);
+
+        // $sth->bindValue(':name', $_POST['name'], PDO::PARAM_STR); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier (son id)
+
+        // $execute = $sth->execute();
+
+        // $updates = $sth->fetch(PDO::FETCH_OBJ);
+        // var_dump($updates);
+
+        $name = Category::getAll();
+        var_dump($name);
+
+
+
+
+
+            // if ($result) {
+            //     $msg = 'La donnée a bien été modifiée !';
+            // } else {
+            //     $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
+            // }
         }
     }
 

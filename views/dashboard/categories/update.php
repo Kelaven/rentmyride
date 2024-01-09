@@ -19,8 +19,8 @@
                                 minlength="2" 
                                 maxlength="30" 
                                 required
-                                value="<?php
-
+                                value="<?=
+                                    $_GET['name']
                                 ?>" >
                                 <small class="text-danger"><?= $error['name'] ?? '' ?></small>
                             </div>

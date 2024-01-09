@@ -111,21 +111,28 @@ class Category
      * méthode pour retourner les données
      * @return [type]
      */
-    public function update() // méthode pour modifier les données
+    public static function update() // méthode pour modifier les données
     {
         $pdo = Database::connect();
 
-        $sql = "UPDATE `categories`
-        SET `name`= 'Bateaux'
-        WHERE `id_category` = 15;";
+        $sql = 'SELECT * FROM `categories`
+            WHERE id = :name';
+
+        // $sql = "UPDATE `categories`
+        // SET `name`= (:name)
+        // WHERE `id_category` = 15;";
 
         $sth = $pdo->prepare($sql);
 
-        $sth->bindValue(':name', $this->getName()); // car l'utilisateur rentre de nouveau une donnée
-
+        $sth->bindValue(':name', $_POST['name'], PDO::PARAM_INT); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier
+        var_dump($sth);
         $result = $sth->execute();
 
         $count = $sth->rowCount(); // compte le nombre d'entrées à modifier
 
     }
+
+
+
+
 }

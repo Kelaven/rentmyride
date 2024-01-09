@@ -6,6 +6,7 @@
     min-width: 60vw;
 }
 .list-group-item{
+    min-height: 40px; /* pour éviter les bugs si le nom renseigné est vide */
     position: relative;
     padding-left: 0px;
 }
