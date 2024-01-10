@@ -41,7 +41,7 @@ try {
             $result = $category->insert();
 
             if ($result) {
-                $msg = 'La donnée a bien été insérée !';
+                $msg = 'La donnée a bien été insérée ! Vous pouvez en saisir une autre.';
             } else {
                 $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
             }
