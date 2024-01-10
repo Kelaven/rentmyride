@@ -15,10 +15,11 @@
                                 <input type="text" class="form-control" placeholder="Exemple : Voitures" id="name" name="name" minlength="2" maxlength="30" required>
                                 <small class="text-danger"><?= $error['name'] ?? '' ?></small>
                             </div>
-                            <button type="submit" class="btn btn-primary mt-5">Valider</button>
+                                <button type="submit" class="btn btn-primary mt-5">Valider</button>
                         </form>
                     </div>
                 </div>
+                <a href="/controllers/dashboard/categories/list-ctrl.php"><p>Retour à la liste des catégories</p></a>
             </div>
         </div>
     </div>
