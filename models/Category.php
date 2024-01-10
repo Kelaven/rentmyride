@@ -107,35 +107,15 @@ class Category
         return $result;
     }
 
+
     /**
-     * méthode pour retourner les données
-     * @return [type]
+     * méthode pour récupérer les informations de la catégorie séléctionnée pour la modifier (update)
+     * @param int $id
+     * 
+     * @return object
      */
-    public static function update() // méthode pour modifier les données
+    public static function get(int $id): object|false // méthode pour update, afin de récupérer les infos de l'id sélectionné
     {
-        $pdo = Database::connect();
-
-        $sql = 'SELECT * FROM `categories`
-            WHERE id = :name';
-
-        // $sql = "UPDATE `categories`
-        // SET `name`= (:name)
-        // WHERE `id_category` = 15;";
-
-        $sth = $pdo->prepare($sql);
-
-        $sth->bindValue(':name', $_POST['name'], PDO::PARAM_INT); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier
-        var_dump($sth);
-        $result = $sth->execute();
-
-        $count = $sth->rowCount(); // compte le nombre d'entrées à modifier
-
-    }
-    public static function get(int $id):object|false // méthode pour update, afin de récupérer les infos de l'id sélectionné
-    {
-        // $id_category = $_GET['id_category'];
-        // var_dump($id_category);
-
         $pdo = Database::connect();
 
         $sql = 'SELECT * FROM `categories`
@@ -151,4 +131,47 @@ class Category
 
         return $result;
     }
+
+    /**
+     * méthode pour retourner les données
+     * @return [type]
+     */
+    public static function update(int $id) // méthode pour modifier les données
+    {
+        $pdo = Database::connect();
+
+        $sql = 'UPDATE `categories`
+        SET `name` = :name
+        WHERE `id_category` = :id_category;';
+
+        $sth = $pdo->prepare($sql);
+
+        $nameUpdated = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS); // je récupère la donnée de l'utilisateur qui correspond à sa modification
+
+        $sth->bindValue(':name', $nameUpdated, PDO::PARAM_STR);
+        $sth->bindValue(':id_category', $id, PDO::PARAM_INT);
+
+        if ($nameUpdated == NULL) {
+            $result = '';
+        } else {
+            $result = $sth->execute();
+        }
+    }
+
+    public static function delete(int $id)
+    {
+        $pdo = Database::connect();
+
+        $sql = 'DELETE FROM `categories`
+        WHERE `id_category` = :id_category;';
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->bindValue(':id_category', $id, PDO::PARAM_INT);
+
+        $result = $sth->execute();
+    }
+
+
+
 }

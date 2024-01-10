@@ -14,13 +14,18 @@ try {
     $css = 'updateCategories.css';
     $title = 'Modification des catégories';
 
-    $id_category = intval(filter_input(INPUT_GET, 'id_category', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, comme ça s'il faut renvoyer false ça renvoie 0
-
+    $id_category = intval(filter_input(INPUT_GET, 'id_category', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, 1 au lieu de "1"
+    
     $category = Category::get($id_category);
     // var_dump($category);
     if (!$category) { // si le résultat retourné est false
         header('Location: /controllers/dashboard/categories/list-ctrl.php');
         die;
+    } else {
+        $categoryUpdated = Category::update($id_category); // mémoriser la modification
+        if ($_SERVER["REQUEST_METHOD"] == "POST") { // quand l'utilisateur clique sur valider, il revient à la page Catégories
+            header('Location: /controllers/dashboard/categories/list-ctrl.php');
+        }
     }
 
 
@@ -40,25 +45,14 @@ try {
         }
 
 
-
-
-
-        if (empty($error)) {
-
-
-
-
-
-
-
-
+        // if (empty($error)) {
 
             // if ($result) {
             //     $msg = 'La donnée a bien été modifiée !';
             // } else {
             //     $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
             // }
-        }
+        // }
     }
 
 

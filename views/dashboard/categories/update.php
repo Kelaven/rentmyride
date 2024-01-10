@@ -19,7 +19,9 @@
                                 minlength="2" 
                                 maxlength="30" 
                                 required
-                                value="" >
+                                value="<?=
+                                $category->name;
+                                ?>" >
                                 <small class="text-danger"><?= $error['name'] ?? '' ?></small>
                             </div>
                             <button type="submit" class="btn btn-primary mt-5">Valider</button>
