@@ -17,3 +17,9 @@ try {
 } catch (\Throwable $th) {
     echo "Erreur : " . $th->getMessage();
 }
+
+
+
+
+// ! views
+include __DIR__ . '/../../../views/templates/dashboard/footer.php';

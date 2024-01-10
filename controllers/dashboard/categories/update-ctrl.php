@@ -15,20 +15,13 @@ try {
     $title = 'Modification des catégories';
 
     $id_category = intval(filter_input(INPUT_GET, 'id_category', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, 1 au lieu de "1"
-    
-    $category = Category::get($id_category);
+
+    $category = Category::get($id_category); // on récupère toutes les propriétés de l'objet, issu de fetch (objet standard)
     // var_dump($category);
     if (!$category) { // si le résultat retourné est false
         header('Location: /controllers/dashboard/categories/list-ctrl.php');
         die;
-    } else {
-        $categoryUpdated = Category::update($id_category); // mémoriser la modification
-        if ($_SERVER["REQUEST_METHOD"] == "POST") { // quand l'utilisateur clique sur valider, il revient à la page Catégories
-            header('Location: /controllers/dashboard/categories/list-ctrl.php');
-        }
     }
-
-
 
 
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
@@ -45,25 +38,33 @@ try {
         }
 
 
-        // if (empty($error)) {
+        if (empty($error)) {
 
-            // if ($result) {
-            //     $msg = 'La donnée a bien été modifiée !';
-            // } else {
-            //     $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
-            // }
-        // }
+            $category = new Category();
+
+            $category->setName($name);
+            $category->setIdCategory($id_category);
+
+            $result = $category->update();
+
+
+            if ($result) {
+                $msg = 'La donnée a bien été modifiée ! Vous allez être redirigé(e).';
+                // header('Location: /controllers/dashboard/categories/list-ctrl.php');
+                header("Refresh: 3, url='/controllers/dashboard/categories/list-ctrl.php'");
+            } else {
+                $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
+            }
+        }
     }
 
 
-
-
-    $categories = Category::getAll();
 } catch (\Throwable $th) {
     echo "Erreur : " . $th->getMessage();
 }
 
 
+$category = Category::get($id_category); // je récupère mon objet avec toutes les modifications précédentes
 
 
 

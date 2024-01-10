@@ -136,7 +136,8 @@ class Category
      * méthode pour retourner les données
      * @return [type]
      */
-    public static function update(int $id) // méthode pour modifier les données
+    // public static function update(int $id) // méthode pour modifier les données
+    public function update() // méthode pour modifier les données
     {
         $pdo = Database::connect();
 
@@ -148,13 +149,18 @@ class Category
 
         $nameUpdated = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS); // je récupère la donnée de l'utilisateur qui correspond à sa modification
 
-        $sth->bindValue(':name', $nameUpdated, PDO::PARAM_STR);
-        $sth->bindValue(':id_category', $id, PDO::PARAM_INT);
+        // $sth->bindValue(':name', $nameUpdated, PDO::PARAM_STR);
+        $sth->bindValue(':name', $this->getName());
+        // $sth->bindValue(':id_category', $id, PDO::PARAM_INT);
+        $sth->bindValue(':id_category', $this->getIdCategory(), PDO::PARAM_INT);
+
 
         if ($nameUpdated == NULL) {
             $result = '';
         } else {
             $result = $sth->execute();
+
+            return $result;
         }
     }
 
@@ -171,7 +177,4 @@ class Category
 
         $result = $sth->execute();
     }
-
-
-
 }

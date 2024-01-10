@@ -26,7 +26,8 @@
                             foreach ($categories as $category) { ?>
 
                                 <li class="list-group-item list-group-item--border">
-                                    <?= $category->name ?> <span class="logos"><a href="/controllers/dashboard/categories/update-ctrl.php?id_category=<?= $category->id_category ?>" data-bs-toggle="tooltip" data-bs-title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a> <a href="/controllers/dashboard/categories/delete-ctrl.php?id_category=<?= $category->id_category ?>" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a></span>
+                                    <?= $category->name ?> <span class="logos"><a href="/controllers/dashboard/categories/update-ctrl.php?id_category=<?= $category->id_category ?>" data-bs-toggle="tooltip" data-bs-title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a> 
+                                    <a class="delete__link" href="/controllers/dashboard/categories/delete-ctrl.php?id_category=<?= $category->id_category ?>" data-delete="<?= $category->id_category ?>" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a></span>
                                 </li>
                             <?php } ?>
                         </ul>
