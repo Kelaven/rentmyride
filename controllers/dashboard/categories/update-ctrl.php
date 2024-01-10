@@ -45,16 +45,24 @@ try {
             $category->setName($name);
             $category->setIdCategory($id_category);
 
-            $result = $category->update();
 
+            $isExist = Category::isExist($name); // * vérifier s'il existe déjà une donnée avec le nom
 
-            if ($result) {
-                $msg = 'La donnée a bien été modifiée ! Vous allez être redirigé(e).';
-                // header('Location: /controllers/dashboard/categories/list-ctrl.php');
-                header("Refresh: 3, url='/controllers/dashboard/categories/list-ctrl.php'");
+            if ($isExist) {
+                $msg = 'La donnée existe déjà';
             } else {
-                $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
+                $result = $category->update();
+
+                if ($result) {
+                    $msg = 'La donnée a bien été modifiée ! Vous allez être redirigé(e).';
+                    // header('Location: /controllers/dashboard/categories/list-ctrl.php');
+                    header("Refresh: 3, url='/controllers/dashboard/categories/list-ctrl.php'");
+                } else {
+                    $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
+                }
             }
+
+            
         }
     }
 

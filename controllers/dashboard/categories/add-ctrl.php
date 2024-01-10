@@ -30,20 +30,32 @@ try {
         }
 
 
+
+
+
+
+
+
         // * connexion à la BDD pour y insérer la valeur entrée
         // https://www.pierre-giraud.com/php-mysql-apprendre-coder-cours/requete-preparee/ 
-
 
 
         if (empty($error)) {
             $category = new Category();
             $category->setName($name);
-            $result = $category->insert();
 
-            if ($result) {
-                $msg = 'La donnée a bien été insérée ! Vous pouvez en saisir une autre.';
+            $isExist = Category::isExist($name); // * vérifier s'il existe déjà une donnée
+
+            if ($isExist) {
+                $msg = 'La donnée existe déjà';
             } else {
-                $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
+                $result = $category->insert();
+
+                if ($result) {
+                    $msg = 'La donnée a bien été insérée ! Vous pouvez en saisir une autre.';
+                } else {
+                    $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
+                }
             }
         }
     }

@@ -147,24 +147,22 @@ class Category
 
         $sth = $pdo->prepare($sql);
 
-        $nameUpdated = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS); // je récupère la donnée de l'utilisateur qui correspond à sa modification
 
-        // $sth->bindValue(':name', $nameUpdated, PDO::PARAM_STR);
         $sth->bindValue(':name', $this->getName());
-        // $sth->bindValue(':id_category', $id, PDO::PARAM_INT);
         $sth->bindValue(':id_category', $this->getIdCategory(), PDO::PARAM_INT);
 
+        $result = $sth->execute();
 
-        if ($nameUpdated == NULL) {
-            $result = '';
-        } else {
-            $result = $sth->execute();
-
-            return $result;
-        }
+        return $result;
     }
 
-    public static function delete(int $id)
+    /**
+     * méthode pour supprimer une catégorie
+     * @param int $id
+     * 
+     * @return [type]
+     */
+    public static function delete(int $id) // méthode pour supprimer une catégorie
     {
         $pdo = Database::connect();
 
@@ -176,5 +174,24 @@ class Category
         $sth->bindValue(':id_category', $id, PDO::PARAM_INT);
 
         $result = $sth->execute();
+    }
+
+    public static function isExist($name)
+    {
+        $pdo = Database::connect();
+
+        $sql = 'SELECT `name` 
+        FROM `categories`
+        WHERE `name` = :name;';
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->bindValue(':name', $name, PDO::PARAM_STR);
+
+        $result = $sth->execute(); // retourne true ou false, à compléter avec fetch
+
+        $result = $sth->fetch(PDO::FETCH_OBJ);
+
+        return $result;
     }
 }
