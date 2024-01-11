@@ -12,14 +12,14 @@
     <!-- mon style -->
     <link rel="stylesheet" href="/public/assets/css/header.css">
     <?php
-    if (isset($css)) {
+    if (isset($cssCategories)) {
     ?>
-        <link rel="stylesheet" href="/public/assets/css/<?= $css ?>">
+        <link rel="stylesheet" href="/public/assets/css/categories/<?= $cssCategories ?>">
     <?php } ?>
     <?php
-    if (isset($css)) {
+    if (isset($cssVehicles)) {
     ?>
-        <link rel="stylesheet" href="/public/assets/css/<?= $css ?>">
+        <link rel="stylesheet" href="/public/assets/css/vehicles/<?= $cssVehicles ?>">
     <?php } ?>
 
 

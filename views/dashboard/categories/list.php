@@ -17,7 +17,10 @@
                     <div class="card-header">
                         Liste des catégories
                     </div>
-                    <div class="card-body p-5">
+                    <div class="card-body p-5 pt-3">
+                        <p class="text-info">
+                            <?= $msg ?>
+                        </p>
                         <ul class="list-group list-group-flush">
                             <li class="list-group-item fw-bold mb-2">
                                 Nom :

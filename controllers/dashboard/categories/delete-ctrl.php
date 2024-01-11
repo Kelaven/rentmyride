@@ -1,4 +1,5 @@
 <?php
+session_start(); // on va utiliser les sessions
 
 // ! fichier init
 
@@ -7,13 +8,22 @@ require_once __DIR__ . '/../../../models/Category.php';
 
 
 try {
-    $id_category = intval(filter_input(INPUT_GET, 'id_category', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, 1 au lieu de "1"
+    $id_category = intval(filter_input(INPUT_GET, 'id_category', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, 1 au lieu de "1" ou 0 au lieu de false
 
     $delete = Category::delete($id_category);
 
-    header('Location: /controllers/dashboard/categories/list-ctrl.php'); // si la suppression fonctionne, on renvoie sur la même page en la rafraîchissant
 
+    if ($delete) {
+        $msg = 'La donnée a bien été supprimée !';
 
+        $_SESSION['msg'] = $msg; // $_SESSION est un tableau
+
+        // header('Location: /controllers/dashboard/categories/list-ctrl.php?msg=' . $msg); // si la suppression fonctionne, on renvoie sur la même page en la rafraîchissant
+        header('Location: /controllers/dashboard/categories/list-ctrl.php');
+        die; // on mets un die ou exit après une redirection
+    } else {
+        $msg = 'La donnée n\'a pas été supprimée.';
+    }
 } catch (\Throwable $th) {
     echo "Erreur : " . $th->getMessage();
 }

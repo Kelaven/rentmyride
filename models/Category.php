@@ -171,9 +171,11 @@ class Category
 
         $sth = $pdo->prepare($sql);
 
-        $sth->bindValue(':id_category', $id, PDO::PARAM_INT);
+        $sth->bindValue(':id_category', $id, PDO::PARAM_INT); // Attention il est important de préciser PARAM_INT ici pour éviter que la requête sql ne soit affectée et traite la valeur comme s'il s'agissait d'une string (l'option par défaut étant PARAM_STR)
 
         $result = $sth->execute();
+
+        return $result;
     }
 
     public static function isExist($name)

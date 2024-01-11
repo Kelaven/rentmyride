@@ -5,7 +5,8 @@ require_once __DIR__ . '/../helpers/Database.php';
 
 
 
-class Vehicle{
+class Vehicle
+{
 
     // ! attributs
     private string $brand;
@@ -20,16 +21,17 @@ class Vehicle{
 
 
     // ! méthode magique
-    public function __construct(string $brand = '', 
-    string $model = '', 
-    string $registration = '', 
-    int $mileage = NULL, 
-    ?string $picture = '', 
-    string $created_at = '', 
-    string $updated_at = '',
-    ?string $deleted_at = '',
-    int $id_categories = NULL)
-    {
+    public function __construct(
+        string $brand = '',
+        string $model = '',
+        string $registration = '',
+        int $mileage = NULL,
+        ?string $picture = '',
+        string $created_at = '',
+        string $updated_at = '',
+        ?string $deleted_at = '',
+        int $id_categories = NULL
+    ) {
         $this->brand = $brand;
         $this->model = $model;
         $this->registration = $registration;
@@ -60,7 +62,7 @@ class Vehicle{
     }
     public function getPicture(): ?string
     {
-        return $this->picture;        
+        return $this->picture;
     }
     public function getCreated_at(): string
     {
@@ -116,6 +118,4 @@ class Vehicle{
     {
         $this->id_categories = $id_categories;
     }
-
-
 }
