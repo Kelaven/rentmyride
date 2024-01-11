@@ -13,7 +13,7 @@
         <div class="row">
             <div class="col">
                 <!-- carte contenant les infos -->
-                <div class="card bg-light mb-3" style="max-width: 20rem;">
+                <div class="card bg-light mb-3">
                     <div class="card-header">
                         Liste des catégories
                     </div>

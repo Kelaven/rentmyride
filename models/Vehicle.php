@@ -17,7 +17,7 @@ class Vehicle
     private string $created_at;
     private string $updated_at;
     private ?string $deleted_at;
-    private int $id_categories;
+    // ? private int $id_categories;
 
 
     // ! méthode magique

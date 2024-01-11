@@ -3,7 +3,7 @@
         <div class="row">
             <div class="col">
                 <!-- carte contenant le form -->
-                <div class="card bg-light mb-3" style="max-width: 20rem;">
+                <div class="card bg-light mb-3">
                     <div class="card-body p-5">
                         <!-- form -->
                         <form method="POST" novalidate>
