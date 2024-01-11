@@ -17,14 +17,14 @@ try {
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // * nettoyage et validation du form
         $error = [];
-        // pour ajouter une catégorie :
+
         $name = filter_input(INPUT_POST, 'name', FILTER_SANITIZE_SPECIAL_CHARS); // filtre de nettoyage
         if (empty($name)) {
             $error['name'] = 'Le champ ne peut pas être vide';
         } else {
             $is_name_ok = filter_var($name, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => '/' . REGEX_CATEGORY . '/'))); // filtre de validation
             if (!$is_name_ok) {
-                $error['name'] = 'Le nom de la catégorie doit contenir 2 à 30 caractères alphabétiques ou numériques.';
+                $error['name'] = 'Le nom de la catégorie doit contenir 2 à 30 caractères alphabétiques et/ou numériques.';
             }
         }
 

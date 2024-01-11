@@ -40,7 +40,7 @@ class Vehicle
         $this->created_at = $created_at;
         $this->updated_at = $updated_at;
         $this->deleted_at = $deleted_at;
-        $this->id_categories = $id_categories;
+        // ? $this->id_categories = $id_categories;
     }
 
     // ! getters
@@ -76,10 +76,10 @@ class Vehicle
     {
         return $this->deleted_at;
     }
-    public function getId_categories(): int
-    {
-        return $this->id_categories;
-    }
+    // ? public function getId_categories(): int
+    // {
+    //     return $this->id_categories;
+    // }
 
     // ! setters
     public function setBrand(string $brand)
@@ -114,8 +114,8 @@ class Vehicle
     {
         $this->deleted_at = $deleted_at;
     }
-    public function setId_categories(int $id_categories)
-    {
-        $this->id_categories = $id_categories;
-    }
+    // ? public function setId_categories(int $id_categories)
+    // {
+    //     $this->id_categories = $id_categories;
+    // }
 }
