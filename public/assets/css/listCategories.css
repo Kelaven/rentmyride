@@ -25,3 +25,6 @@ i:hover{
     color: #999;
     scale: 1.2;
 }
+.fa-trash{
+    cursor: pointer;
+}

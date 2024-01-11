@@ -9,7 +9,6 @@ require_once __DIR__ . '/../../../models/Category.php';
 
 
 
-
 try {
     $css = 'addCategories.css';
     $title = 'Ajout d\'une catégorie';
