@@ -19,7 +19,7 @@ class Vehicle
     private ?string $updated_at;
     private ?string $deleted_at;
     private ?int $id_category;
-    private object|false $category;
+    // private object|false $category;
 
 
     // ! méthode magique
@@ -45,7 +45,7 @@ class Vehicle
         $this->updated_at = $updated_at;
         $this->deleted_at = $deleted_at;
         $this->id_category = $id_category;
-        $this->category = Category::get($id_category);
+        // $this->category = Category::get($id_category);
     }
 
 
@@ -55,11 +55,11 @@ class Vehicle
      *
      * @return  self
      */ 
-    public function setId_vehicle(?int $id_vehicle)
+    public function setIdVehicle(?int $id_vehicle)
     {
         $this->id_vehicle = $id_vehicle;
     }
-    public function getId_vehicle(): ?int
+    public function getIdVehicle(): ?int
     {
         return $this->id_vehicle;
     }
@@ -136,24 +136,24 @@ class Vehicle
         return $this->deleted_at;
     }
     // ! setter et getter idCategory :     
-    public function setIdCategory(int $id_category)
+    public function setIdCategory(?int $id_category)
     {
         $this->id_category = $id_category;
-        $this->category = Category::get($id_category);
+        // $this->category = Category::get($id_category);
     }
-    public function getIdCategory(): int
+    public function getIdCategory(): ?int
     {
         return $this->id_category;
     }
-    // ! setter et getter getCategory : 
-    public function setCategory(int $id_category)
-    {
-        $this->category = Category::get($id_category);
-    }
-    public function getCategory(): object
-    {
-        return $this->category;
-    }
+    // ? setter et getter getCategory : 
+    // public function setCategory(int $id_category)
+    // {
+    //     $this->category = Category::get($id_category);
+    // }
+    // public function getCategory(): object
+    // {
+    //     return $this->category;
+    // }
 
 
 
@@ -168,11 +168,20 @@ class Vehicle
         $pdo = Database::connect();
 
         $sql = "INSERT INTO `vehicles` (`brand`, `model`, `registration`, `mileage`, `picture`, `id_category`)
-        VALUES ('audi', 'a3', 'AA-111-AA', 12500, '', :id_category);";
+        VALUES (:brand, :model, :registration, :mileage, :picture, :id_category);";
 
         $sth = $pdo->prepare($sql);
 
-        // $sth->bindValue(':id_category', , PDO::PARAM_INT);
+        $sth->bindValue(':brand', $this->getBrand());
+        $sth->bindValue(':model', $this->getModel());
+        $sth->bindValue(':registration', $this->getRegistration());
+        $sth->bindValue(':mileage', $this->getMileage());
+        $sth->bindValue(':picture', $this->getPicture());
+        $sth->bindValue(':id_category', $this->getIdCategory());
+
+        $result = $sth->execute();
+
+        return $result;
     }
 
 

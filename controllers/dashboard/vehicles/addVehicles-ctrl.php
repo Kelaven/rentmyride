@@ -6,9 +6,7 @@ require_once __DIR__ . '/../../../config/init.php';
 require_once __DIR__ . '/../../../models/Category.php';
 require_once __DIR__ . '/../../../models/Vehicle.php';
 
-// $vehicle = new Vehicle();
-// var_dump($vehicle);
-// $vehicle->setIdCategory(15);
+
 
 try {
     $cssVehicles = 'addVehicles.css';
@@ -17,6 +15,16 @@ try {
     // * nettoyage et validation
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = [];
+        // id_category
+        $id_category = filter_input(INPUT_POST, 'id_category', FILTER_SANITIZE_NUMBER_INT);
+        if (empty($id_category)) {
+            $error['id_category'] = 'Le champ ne peut pas être vide.';
+        } else {
+            $isOk = filter_var($id_category, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => '/' . REGEX_CATEGORY . '/')));
+            if (!$isOk) {
+                $error['id_category'] = 'Erreur, le choix est invalide.';
+            }
+        }
         // brand
         $brand = filter_input(INPUT_POST, 'brand', FILTER_SANITIZE_SPECIAL_CHARS); // nettoyage
         if (empty($brand)) {
@@ -54,7 +62,7 @@ try {
         } else {
             $isOk = filter_var($mileage, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => '/' . REGEX_MILEAGE . '/')));
             if (!$isOk) {
-                $error['mileage'] = 'Le nom de kilomètres doit être de format : 12500.';
+                $error['mileage'] = 'Le nombre de kilomètres est invalide.';
             }
         }
         // picture
@@ -88,8 +96,20 @@ try {
 
     // * envoi en BDD
     $categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML)
+    var_dump($categories);
 
-    
+    if (empty($error)) {
+        $vehicle = new Vehicle();
+        // $vehicle->setName($name);
+
+        $result = $vehicle->insert();
+
+        if ($result) {
+            $msg = 'La donnée a bien été insérée ! Vous pouvez en saisir une autre.';
+        } else {
+            $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
+        }
+    }
 
 
 

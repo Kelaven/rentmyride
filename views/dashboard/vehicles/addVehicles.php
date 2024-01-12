@@ -18,11 +18,13 @@
                                     <div class="container__inputs--left">
                                         <!-- categories -->
                                         <div class="form-group">
-                                            <label for="id-category" class="form-label pt-3">Catégorie :</label>
-                                            <select class="form-select" id="id-category" name="id-category">
+                                            <label for="id_category" class="form-label pt-3">Catégorie :</label>
+                                            <select class="form-select" id="id_category" name="id_category">
                                                 <?php
                                                 foreach ($categories as $category) { ?>
-                                                    <option><?= ucfirst($category->name) ?></option> <!-- ucfirst() pour mettre la première lettre en majuscules -->
+                                                    <option value="<?= $category->id_category ?>"<?php if ($id_category == $category->id_category) { ?>
+                                                        selected
+                                                    <?php } ?>><?= ucfirst($category->name) ?></option>
                                                 <?php }
                                                 ?>
                                             </select>
