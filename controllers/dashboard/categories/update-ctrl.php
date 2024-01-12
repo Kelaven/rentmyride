@@ -38,6 +38,13 @@ try {
         }
 
 
+
+        if (Category::isExist($name)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
+            $error['name'] = 'La donnée existe déjà';
+        }
+
+
+
         if (empty($error)) {
 
             $category = new Category();
@@ -45,28 +52,17 @@ try {
             $category->setName($name);
             $category->setIdCategory($id_category);
 
+            $result = $category->update();
 
-            $isExist = Category::isExist($name); // * vérifier s'il existe déjà une donnée avec le nom
-
-            if ($isExist) {
-                $msg = 'La donnée existe déjà';
+            if ($result) {
+                $msg = 'La donnée a bien été modifiée ! Vous allez être redirigé(e).';
+                // header('Location: /controllers/dashboard/categories/list-ctrl.php');
+                header("Refresh: 3, url='/controllers/dashboard/categories/list-ctrl.php'");
             } else {
-                $result = $category->update();
-
-                if ($result) {
-                    $msg = 'La donnée a bien été modifiée ! Vous allez être redirigé(e).';
-                    // header('Location: /controllers/dashboard/categories/list-ctrl.php');
-                    header("Refresh: 3, url='/controllers/dashboard/categories/list-ctrl.php'");
-                } else {
-                    $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
-                }
+                $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
             }
-
-            
         }
     }
-
-
 } catch (\Throwable $th) {
     echo "Erreur : " . $th->getMessage();
 }

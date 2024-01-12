@@ -178,7 +178,7 @@ class Category
         return $result;
     }
 
-    public static function isExist($name)
+    public static function isExist(string $name)
     {
         $pdo = Database::connect();
 
@@ -186,6 +186,8 @@ class Category
         FROM `categories`
         WHERE `name` = :name;';
 
+        // $sql = 'SELECT COUNT (*) AS `nbcolumn` FROM `categories` WHERE `name` = :name;'; // compte le nombre d'élément égal et retourne un entier 
+        // on utilise un alias AS `nbclolumn` dans le cas où on aurait besoin de récupérer cette valeur, pour nommer correctement la colonne qui contient la valeur
         $sth = $pdo->prepare($sql);
 
         $sth->bindValue(':name', $name, PDO::PARAM_STR);
@@ -193,7 +195,9 @@ class Category
         $result = $sth->execute(); // retourne true ou false, à compléter avec fetch
 
         $result = $sth->fetch(PDO::FETCH_OBJ);
+        // $result = $sth->fetchColumn(); // récupère uniquement la valeur de cette colonne (ici 1 ou 0)
 
         return $result;
+        // return ($result > 0); // retourne true ou false
     }
 }

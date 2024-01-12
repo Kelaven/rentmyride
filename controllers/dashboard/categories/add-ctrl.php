@@ -30,31 +30,23 @@ try {
 
 
 
+        if (Category::isExist($name)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
+            $error['name'] = 'La donnée existe déjà';
+        }
 
 
-
-
-
-        // * connexion à la BDD pour y insérer la valeur entrée
-        // https://www.pierre-giraud.com/php-mysql-apprendre-coder-cours/requete-preparee/ 
 
 
         if (empty($error)) {
             $category = new Category();
             $category->setName($name);
 
-            $isExist = Category::isExist($name); // * vérifier s'il existe déjà une donnée
+            $result = $category->insert();
 
-            if ($isExist) {
-                $msg = 'La donnée existe déjà';
+            if ($result) {
+                $msg = 'La donnée a bien été insérée ! Vous pouvez en saisir une autre.';
             } else {
-                $result = $category->insert();
-
-                if ($result) {
-                    $msg = 'La donnée a bien été insérée ! Vous pouvez en saisir une autre.';
-                } else {
-                    $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
-                }
+                $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
             }
         }
     }
