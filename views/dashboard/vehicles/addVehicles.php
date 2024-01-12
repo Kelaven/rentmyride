@@ -16,6 +16,20 @@
                                 </div>
                                 <div class="container__inputs">
                                     <div class="container__inputs--left">
+                                        <!-- categories -->
+                                        <div class="form-group">
+                                            <label for="id-category" class="form-label pt-3">Catégorie :</label>
+                                            <select class="form-select" id="id-category" name="id-category">
+                                                <?php
+                                                foreach ($categories as $category) { ?>
+                                                    <option><?= ucfirst($category->name) ?></option> <!-- ucfirst() pour mettre la première lettre en majuscules -->
+                                                <?php }
+                                                ?>
+                                            </select>
+                                        </div>
+                                        <div>
+                                            <small class="text-danger"><?= $error['brand'] ?? '' ?></small>
+                                        </div>
                                         <!-- brand -->
                                         <label class="col-form-label" for="brand">Marque :</label>
                                         <input type="text" class="form-control" placeholder="Audi" id="brand" name="brand" minlength="2" maxlength="30" required>
@@ -28,15 +42,15 @@
                                         <div>
                                             <small class="text-danger"><?= $error['model'] ?? '' ?></small>
                                         </div>
-                                        <!-- registration -->
-                                        <label class="col-form-label" for="registration">Plaque d'immatriculation :</label>
-                                        <input type="text" class="form-control" placeholder="AB-123-CD" id="registration" name="registration" required>
-                                        <div>
-                                            <small class="text-danger"><?= $error['registration'] ?? '' ?></small>
-                                        </div>
                                     </div>
                                     <div class="container__inputs--right">
                                         <div class="container__inputs--right--center">
+                                            <!-- registration -->
+                                            <label class="col-form-label" for="registration">Plaque d'immatriculation :</label>
+                                            <input type="text" class="form-control" placeholder="AB-123-CD" id="registration" name="registration" required>
+                                            <div>
+                                                <small class="text-danger"><?= $error['registration'] ?? '' ?></small>
+                                            </div>
                                             <!-- mileage -->
                                             <label class="col-form-label" for="mileage">Kilométrage :</label>
                                             <input type="number" class="form-control" placeholder="12500" id="mileage" name="mileage" required>

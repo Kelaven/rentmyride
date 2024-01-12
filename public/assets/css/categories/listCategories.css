@@ -28,3 +28,6 @@ i:hover{
 .fa-trash{
     cursor: pointer;
 }
+.categories__name::first-letter{ /* ! pour que le name commence toujours par une majuscule même si on l'entre dans la BDD en minuscules */
+    text-transform: uppercase;
+}

@@ -3,13 +3,18 @@
 // ! fichier init
 
 require_once __DIR__ . '/../../../config/init.php';
+require_once __DIR__ . '/../../../models/Category.php';
+require_once __DIR__ . '/../../../models/Vehicle.php';
 
+// $vehicle = new Vehicle();
+// var_dump($vehicle);
+// $vehicle->setIdCategory(15);
 
 try {
     $cssVehicles = 'addVehicles.css';
     $title = 'Ajout d\'un véhicule';
 
-
+    // * nettoyage et validation
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         $error = [];
         // brand
@@ -33,7 +38,7 @@ try {
             }
         }
         // registration
-        $registration = filter_input(INPUT_POST, 'registration', FILTER_SANITIZE_NUMBER_INT); // nettoyage
+        $registration = filter_input(INPUT_POST, 'registration', FILTER_SANITIZE_SPECIAL_CHARS); // nettoyage
         if (empty($registration)) {
             $error['registration'] = 'Le champ ne peut pas être vide';
         } else {
@@ -77,8 +82,19 @@ try {
                 $error = $th->getMessage();
                 echo $error;
             }
-        } 
+        }
     }
+
+
+    // * envoi en BDD
+    $categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML)
+
+    
+
+
+
+
+
 } catch (Throwable $e) {
     echo "Erreur : " . $e->getMessage();
 }

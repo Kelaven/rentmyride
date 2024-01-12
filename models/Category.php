@@ -114,7 +114,7 @@ class Category
      * 
      * @return object
      */
-    public static function get(int $id): object|false // méthode pour update, afin de récupérer les infos de l'id sélectionné
+    public static function get(?int $id): object|false // méthode pour update, afin de récupérer les infos de l'id sélectionné
     {
         $pdo = Database::connect();
 
