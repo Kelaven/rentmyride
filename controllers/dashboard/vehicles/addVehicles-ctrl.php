@@ -7,7 +7,6 @@ require_once __DIR__ . '/../../../models/Category.php';
 require_once __DIR__ . '/../../../models/Vehicle.php';
 
 
-
 try {
     $cssVehicles = 'addVehicles.css';
     $title = 'Ajout d\'un véhicule';
@@ -20,7 +19,7 @@ try {
         if (empty($id_category)) {
             $error['id_category'] = 'Le champ ne peut pas être vide.';
         } else {
-            $isOk = filter_var($id_category, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => '/' . REGEX_CATEGORY . '/')));
+            $isOk = filter_var($id_category, FILTER_VALIDATE_INT);
             if (!$isOk) {
                 $error['id_category'] = 'Erreur, le choix est invalide.';
             }
@@ -94,13 +93,28 @@ try {
     }
 
 
+
+
+    if (Vehicle::isExist($brand, $model, $registration, $mileage, $id_category)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
+        $error['isExist'] = 'La donnée existe déjà';
+    }
+
+
+
     // * envoi en BDD
     $categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML)
-    var_dump($categories);
+    // var_dump($categories);
 
     if (empty($error)) {
         $vehicle = new Vehicle();
-        // $vehicle->setName($name);
+        $vehicle->setBrand($brand);
+        $vehicle->setModel($model);
+        $vehicle->setRegistration($registration);
+        $vehicle->setMileage($mileage);
+        if (isset($picture)) {
+            $vehicle->setPicture($picture);
+        }
+        $vehicle->setIdCategory($id_category);
 
         $result = $vehicle->insert();
 
@@ -110,11 +124,6 @@ try {
             $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
         }
     }
-
-
-
-
-
 } catch (Throwable $e) {
     echo "Erreur : " . $e->getMessage();
 }

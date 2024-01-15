@@ -184,5 +184,27 @@ class Vehicle
         return $result;
     }
 
+    public static function isExist(string $brand, string $model, string $registration, int $mileage, int $id_category)
+    {
+        $pdo = Database::connect();
 
+        $sql = 'SELECT `brand`, `model`, `registration`, `mileage`, `picture`, `id_category`
+        FROM `vehicles`
+        WHERE `brand` = :brand AND `model` = :model AND `registration` = :registration AND `mileage` = :mileage AND `id_category` = :id_category;';
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->bindValue(':brand', $brand);
+        $sth->bindValue(':model', $model);
+        $sth->bindValue(':registration', $registration);
+        $sth->bindValue(':mileage', $mileage, PDO::PARAM_INT);
+        // $sth->bindValue(':picture', $picture);
+        $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT);
+
+        $result = $sth->execute(); // retourne true ou false, à compléter avec fetch
+
+        $result = $sth->fetch(PDO::FETCH_OBJ);
+
+        return $result;
+    }
 }

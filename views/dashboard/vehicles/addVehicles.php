@@ -13,6 +13,7 @@
                             <div class="form-group">
                                 <div class="text-info fw-bold">
                                     <?= $msg ?? '' ?>
+                                    <?= $error['isExist'] ?? '' ?>
                                 </div>
                                 <div class="container__inputs">
                                     <div class="container__inputs--left">
@@ -22,7 +23,7 @@
                                             <select class="form-select" id="id_category" name="id_category">
                                                 <?php
                                                 foreach ($categories as $category) { ?>
-                                                    <option value="<?= $category->id_category ?>"<?php if ($id_category == $category->id_category) { ?>
+                                                    <option value="<?= $category->id_category ?>"<?php if ((isset($id_category)) && ($id_category == $category->id_category)) { ?>
                                                         selected
                                                     <?php } ?>><?= ucfirst($category->name) ?></option>
                                                 <?php }
