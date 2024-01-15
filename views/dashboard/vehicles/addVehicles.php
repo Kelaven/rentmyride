@@ -19,7 +19,7 @@
                                     <div class="container__inputs--left">
                                         <!-- categories -->
                                         <div class="form-group">
-                                            <label for="id_category" class="form-label pt-3">Catégorie :</label>
+                                            <label for="id_category" class="form-label pt-3">Catégorie* :</label>
                                             <select class="form-select" id="id_category" name="id_category">
                                                 <?php
                                                 foreach ($categories as $category) { ?>
@@ -30,18 +30,15 @@
                                                 ?>
                                             </select>
                                         </div>
-                                        <div>
-                                            <small class="text-danger"><?= $error['brand'] ?? '' ?></small>
-                                        </div>
                                         <!-- brand -->
-                                        <label class="col-form-label" for="brand">Marque :</label>
-                                        <input type="text" class="form-control" placeholder="Audi" id="brand" name="brand" minlength="2" maxlength="30" required>
+                                        <label class="col-form-label" for="brand">Marque* :</label>
+                                        <input type="text" class="form-control" placeholder="Audi" id="brand" name="brand" minlength="2" maxlength="30" required value="<?= $brand ?? '' ?>">
                                         <div>
                                             <small class="text-danger"><?= $error['brand'] ?? '' ?></small>
                                         </div>
                                         <!-- model -->
-                                        <label class="col-form-label" for="model">Modèle :</label>
-                                        <input type="text" class="form-control" placeholder="a3" id="model" name="model" minlength="1" maxlength="30" required>
+                                        <label class="col-form-label" for="model">Modèle* :</label>
+                                        <input type="text" class="form-control" placeholder="a3" id="model" name="model" minlength="1" maxlength="30" required value="<?= $model ?? '' ?>">
                                         <div>
                                             <small class="text-danger"><?= $error['model'] ?? '' ?></small>
                                         </div>
@@ -49,14 +46,14 @@
                                     <div class="container__inputs--right">
                                         <div class="container__inputs--right--center">
                                             <!-- registration -->
-                                            <label class="col-form-label" for="registration">Plaque d'immatriculation :</label>
-                                            <input type="text" class="form-control" placeholder="AB-123-CD" id="registration" name="registration" required>
+                                            <label class="col-form-label" for="registration">Plaque d'immatriculation* :</label>
+                                            <input type="text" class="form-control" placeholder="AB-123-CD" id="registration" name="registration" required value="<?= $registration ?? '' ?>">
                                             <div>
                                                 <small class="text-danger"><?= $error['registration'] ?? '' ?></small>
                                             </div>
                                             <!-- mileage -->
-                                            <label class="col-form-label" for="mileage">Kilométrage :</label>
-                                            <input type="number" class="form-control" placeholder="12500" id="mileage" name="mileage" required>
+                                            <label class="col-form-label" for="mileage">Kilométrage* :</label>
+                                            <input type="number" class="form-control" placeholder="12500" id="mileage" name="mileage" required value="<?= $mileage ?? '' ?>">
                                             <div>
                                                 <small class="text-danger"><?= $error['mileage'] ?? '' ?></small>
                                             </div>
@@ -72,6 +69,9 @@
                             </div>
                             <div class="container__btn">
                                 <button type="submit" class="btn btn-primary mt-5">Valider</button>
+                            </div>
+                            <div>
+                                <p class="text-end m-0 msg__nb">* données obligatoires</p>
                             </div>
                         </form>
                     </div>

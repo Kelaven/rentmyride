@@ -64,7 +64,7 @@ try {
             $error['mileage'] = 'Le champ ne peut pas être vide';
         } else {
             $isOk = filter_var($mileage, FILTER_VALIDATE_REGEXP, array("options" => array("regexp" => '/' . REGEX_MILEAGE . '/')));
-            if (!$isOk) {
+            if (!$isOk || $isOk > 1500000) { // ne pas accepter un nombre de Kms > 1M5
                 $error['mileage'] = 'Le nombre de kilomètres est invalide.';
             }
         }
@@ -73,16 +73,16 @@ try {
         if (isset($_FILES['picture']) && ($_FILES['picture']['size'] != 0)) {
             try {
                 if (!isset($_FILES['picture'])) {
-                    throw new Exception("Le champ picture n'existe pas");
+                    throw new Exception("Le champ picture n'existe pas.");
                 }
                 if ($_FILES['picture']['error'] != 0) {
-                    throw new Exception("Une erreur est survenue lors du transfert");
+                    throw new Exception("Une erreur est survenue lors du transfert.");
                 }
-                if ($_FILES['picture']['type'] != 'image/png' && $_FILES['picture']['type'] != 'image/jpeg') {
-                    throw new Exception("Ce fichier n'est pas au bon format");
+                if (!in_array($_FILES['picture']['type'], ARRAY_TYPES)) {
+                    throw new Exception("Ce fichier n'est pas au bon format.");
                 }
                 if ($_FILES['picture']['size'] > MAX_FILESIZE) {
-                    throw new Exception("Ce fichier est trop volumineux");
+                    throw new Exception("Ce fichier est trop volumineux.");
                 }
                 // Upload de l'image sur le serveur dans le bon dossier
                 $from = $_FILES['picture']['tmp_name'];
@@ -90,9 +90,9 @@ try {
                 $filename = uniqid('picture_') . '.' . $extension;
                 $to = __DIR__ . '/../../../public/uploads/users/' . $filename;
                 move_uploaded_file($from, $to);
+                $picture = $filename; // pour n'envoyer en BDD que le nom du fichier et pas le chemin (important sinon on reçoit NULL en BDD)
             } catch (\Throwable $th) {
-                $error = $th->getMessage();
-                echo $error;
+                $error['picture'] = $th->getMessage();
             }
         }
 
