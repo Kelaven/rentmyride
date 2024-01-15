@@ -24,7 +24,7 @@ class Vehicle
 
     // ! méthode magique
     public function __construct(
-        int $id_vehicle = NULL,
+        // int $id_vehicle = NULL, // pas utile de l'écrire
         string $brand = '',
         string $model = '',
         string $registration = '',
@@ -35,8 +35,8 @@ class Vehicle
         ?string $deleted_at = NULL,
         ?int $id_category = NULL
     ) {
-        $this->id_vehicle = $id_vehicle;
-        $this->brand = $brand;
+        // $this->id_vehicle = $id_vehicle;
+        $this->brand = $brand; // ? il vaudrait mieux utiliser ici les setters
         $this->model = $model;
         $this->registration = $registration;
         $this->mileage = $mileage;
@@ -54,7 +54,7 @@ class Vehicle
      * Set the value of id_vehicle
      *
      * @return  self
-     */ 
+     */
     public function setIdVehicle(?int $id_vehicle)
     {
         $this->id_vehicle = $id_vehicle;
@@ -163,7 +163,7 @@ class Vehicle
      * méthode pour insérer les données
      * @return [type]
      */
-    public function insert()
+    public function insert(): bool
     {
         $pdo = Database::connect();
 
@@ -175,13 +175,25 @@ class Vehicle
         $sth->bindValue(':brand', $this->getBrand());
         $sth->bindValue(':model', $this->getModel());
         $sth->bindValue(':registration', $this->getRegistration());
-        $sth->bindValue(':mileage', $this->getMileage());
+        $sth->bindValue(':mileage', $this->getMileage(), PDO::PARAM_INT);
         $sth->bindValue(':picture', $this->getPicture());
-        $sth->bindValue(':id_category', $this->getIdCategory());
+        $sth->bindValue(':id_category', $this->getIdCategory(), PDO::PARAM_INT);
 
-        $result = $sth->execute();
+        $sth->execute(); // renvoi true si l'exécution est ok sinon false mais renverra true aussi si l'exécution est ok alors que peut être qu'aucune ligne n'a été insérée
 
-        return $result;
+        $result = $sth->rowCount(); // si l'exécution est ok et qu'une a bien été insérée ça retournera 1 sinon 0
+
+        // if ($result > 0) { // donc si une ligne a bien été insérée
+        //     return true; // on veut récupérer un booléan (voir typage de la méthode)
+        // } else {
+        //     return false;
+        // }
+
+        return $result > 0 ? 'true' : 'false'; // même chose qu'au dessus en commentaire mais en ternaire :
+
+        // return $sth->rowCount() > 0; // même chose qu'au dessus mais encore plus court, permet de supprimer la ligne $result = $sth->rowCount();
+    
+        // return (bool) $sth->rowCount(); // encore une autre façon d'écrire
     }
 
     public static function isExist(string $brand, string $model, string $registration, int $mileage, int $id_category)

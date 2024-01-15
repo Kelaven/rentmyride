@@ -1,0 +1,54 @@
+#container__creatList, #container__readList{
+    display: flex;
+    justify-content: end;
+}
+.card{
+    min-width: 60vw;
+}
+.list-group-item{
+    min-height: 40px; /* pour éviter les bugs si le nom renseigné est vide */
+    position: relative;
+    padding-left: 0px;
+}
+.list-group-item--border{
+    border-bottom: 1px solid !important;
+}
+.logos{
+    position: absolute;
+    right: 0px;
+    width: 10vw;
+    display: flex;
+    justify-content: space-between;
+    bottom: 8px;
+}
+i:hover{
+    color: #999;
+    scale: 1.2;
+}
+.fa-trash{
+    cursor: pointer;
+}
+.categories__name::first-letter{ /* ! pour que le name commence toujours par une majuscule même si on l'entre dans la BDD en minuscules */
+    text-transform: uppercase;
+}
+
+table{
+    width: 100%;
+}
+td{
+    border: 1px solid #55595C;
+}
+th{
+    border-top: none !important;
+    border: 1px solid #ECEEEF;
+}
+th, td{
+    border-left: none;
+    text-transform: lowercase;
+}
+th::first-letter, td::first-letter{
+    text-transform: capitalize;
+}
+.registration__style{
+    text-transform: uppercase;
+}

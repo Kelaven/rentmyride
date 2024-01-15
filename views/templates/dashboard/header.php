@@ -40,7 +40,7 @@
                     <a href="/controllers/dashboard/categories/list-ctrl.php" class="sidebar__nav--tabs"><i class="fa-solid fa-truck-plane pe-2"></i>Catégories</a>
                 </li>
                 <li>
-                    <a href="#" class="sidebar__nav--tabs"><i class="fa-solid fa-cogs pe-2"></i>Véhicules</a>
+                    <a href="/controllers/dashboard/vehicles/listVehicles-ctrl.php" class="sidebar__nav--tabs"><i class="fa-solid fa-cogs pe-2"></i>Véhicules</a>
                 </li>
                 <li>
                     <a href="#" class="sidebar__nav--tabs"><i class="fa-solid fa-road pe-2"></i>Réservations</a>

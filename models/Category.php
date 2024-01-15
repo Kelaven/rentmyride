@@ -92,7 +92,7 @@ class Category
      * méthode pour lire les données, retourne un tableau
      * @return [type]
      */
-    public static function getAll() // méthode pour lire les données
+    public static function getAll(): array // méthode pour lire les données
     {
         $pdo = Database::connect();
 

@@ -7,6 +7,9 @@ require_once __DIR__ . '/../../../models/Category.php';
 require_once __DIR__ . '/../../../models/Vehicle.php';
 
 
+$categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML)
+
+
 try {
     $cssVehicles = 'addVehicles.css';
     $title = 'Ajout d\'un véhicule';
@@ -19,7 +22,8 @@ try {
         if (empty($id_category)) {
             $error['id_category'] = 'Le champ ne peut pas être vide.';
         } else {
-            $isOk = filter_var($id_category, FILTER_VALIDATE_INT);
+            $categoriesId = array_column($categories, 'id_category'); // création d'un tableau contenant les ID pour vérifier qu'un ID entré par un utilisateur corresponde bien à l'un des ID qui existent dans notre BDD
+            $isOk = in_array($id_category, $categoriesId); // réponds true si l'id correspond bien à l'un de nos ID existant dans la BDD => pas besoin de filtre de validation
             if (!$isOk) {
                 $error['id_category'] = 'Erreur, le choix est invalide.';
             }
@@ -65,6 +69,7 @@ try {
             }
         }
         // picture
+        $picture = null;
         if (isset($_FILES['picture']) && ($_FILES['picture']['size'] != 0)) {
             try {
                 if (!isset($_FILES['picture'])) {
@@ -90,40 +95,49 @@ try {
                 echo $error;
             }
         }
-    }
+
+            // * vérification si la donnée existe
+            if (!empty($brand) && !empty($model) && !empty($registration) && !empty($mileage)) {
+                if (Vehicle::isExist($brand, $model, $registration, $mileage, $id_category)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
+                    $error['isExist'] = 'La donnée existe déjà.';
+                }
+            }
 
 
 
+        if (empty($error)) {
 
-    if (Vehicle::isExist($brand, $model, $registration, $mileage, $id_category)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
-        $error['isExist'] = 'La donnée existe déjà';
-    }
+            // * envoi en BDD
+            $vehicle = new Vehicle();
 
+            $vehicle->setBrand($brand); // j'ai utilisé les setters mais j'aurais aussi pu utiliser la méthode magique construct
+            $vehicle->setModel($model);
+            $vehicle->setRegistration($registration);
+            $vehicle->setMileage($mileage);
+            // if (isset($picture)) { // j'ai pu retirer la condition en définissant "null" à $picture avant de traiter celle qui aurait été envoyée par l'utilisateur
+                $vehicle->setPicture($picture);
+            // }
+            $vehicle->setIdCategory($id_category);
 
+            $result = $vehicle->insert();
 
-    // * envoi en BDD
-    $categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML)
-    // var_dump($categories);
-
-    if (empty($error)) {
-        $vehicle = new Vehicle();
-        $vehicle->setBrand($brand);
-        $vehicle->setModel($model);
-        $vehicle->setRegistration($registration);
-        $vehicle->setMileage($mileage);
-        if (isset($picture)) {
-            $vehicle->setPicture($picture);
+            if ($result) {
+                $msg = 'La donnée a bien été insérée ! Vous pouvez en saisir une autre.';
+            } else {
+                $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
+            }
         }
-        $vehicle->setIdCategory($id_category);
 
-        $result = $vehicle->insert();
 
-        if ($result) {
-            $msg = 'La donnée a bien été insérée ! Vous pouvez en saisir une autre.';
-        } else {
-            $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
-        }
+
     }
+
+
+
+
+
+
+
 } catch (Throwable $e) {
     echo "Erreur : " . $e->getMessage();
 }
