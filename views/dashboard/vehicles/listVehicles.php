@@ -21,23 +21,29 @@
                         <p class="text-info">
                             <!-- <?= $msg ?> -->
                         </p>
-                        <table class="text-center">
+                        <table class="">
                             <tr>
-                                <th>Catégorie</th>
-                                <th>Marque</th>
-                                <th>Modèle</th>
-                                <th>Plaque d'immatriculation</th>
-                                <th>Kilométrage</th>
-                                <th>Photo</th>
+                                <th>Catégorie :</th>
+                                <th>Marque :</th>
+                                <th>Modèle :</th>
+                                <th></th> <!-- modifier -->
+                                <th></th> <!-- supprimer -->
                             </tr>
-                            <tr>
-                                <td>voitures</td>
-                                <td>audi</td>
-                                <td>a3</td>
-                                <td><span class="registration__style">AA-111-AA</span></td>
-                                <td>10000</td>
-                                <td></td>
-                            </tr>
+                            <?php
+                            foreach ($vehicles as $vehicle) { ?>
+                                <tr>
+                                    <td> <?= $vehicle->name; ?> </td>
+                                    <td> <?= $vehicle->brand; ?> </td>
+                                    <td> <?= $vehicle->model; ?> </td>
+                                    <td>
+                                        <a href="#" data-bs-toggle="tooltip" data-bs-title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a>
+                                    </td>
+                                    <td class="text-end">
+                                        <a href="#" class="delete__link" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a>
+                                    </td>
+                                </tr>
+                            <?php }
+                            ?>
                         </table>
 
 

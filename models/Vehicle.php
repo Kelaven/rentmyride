@@ -158,7 +158,9 @@ class Vehicle
 
 
 
-    // ! mes méthodes
+    ////////////// ! mes méthodes ! //////////////
+
+    // ! méthode insert()
     /**
      * méthode pour insérer les données
      * @return [type]
@@ -192,10 +194,11 @@ class Vehicle
         return $result > 0 ? 'true' : 'false'; // même chose qu'au dessus en commentaire mais en ternaire :
 
         // return $sth->rowCount() > 0; // même chose qu'au dessus mais encore plus court, permet de supprimer la ligne $result = $sth->rowCount();
-    
+
         // return (bool) $sth->rowCount(); // encore une autre façon d'écrire
     }
 
+    // ! méthode isExist()
     public static function isExist(string $brand, string $model, string $registration, int $mileage, int $id_category)
     {
         $pdo = Database::connect();
@@ -216,6 +219,21 @@ class Vehicle
         $result = $sth->execute(); // retourne true ou false, à compléter avec fetch
 
         $result = $sth->fetch(PDO::FETCH_OBJ);
+
+        return $result;
+    }
+
+    // ! méthode getAll()
+    public static function getAll(): array // méthode pour lire les données
+    {
+        $pdo = Database::connect();
+
+        $sql = 'SELECT * FROM `vehicles`
+        LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`;';
+
+        $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
+
+        $result = $sth->fetchAll(PDO::FETCH_OBJ); // récupération des résultats sous forme d'objets grâce à FETCH_OBJ (par défaut c'est du tableau indexé associatif)
 
         return $result;
     }

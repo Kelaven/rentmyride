@@ -10,14 +10,14 @@ require_once __DIR__ . '/../../../models/Vehicle.php';
 
 
 
-
 try {
     // * modification du header
     $cssCategories = 'listVehicles.css';
     $title = 'Consultation des véhicules';
 
     // * pour afficher les véhicules
-    // $categories = Vehicle::getAll();
+    $vehicles = Vehicle::getAll();
+    // var_dump($vehicles);
 
 
     // // * afficher le msg de suppression
