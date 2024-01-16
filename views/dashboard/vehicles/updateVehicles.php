@@ -29,13 +29,13 @@
                                         </div>
                                         <!-- brand -->
                                         <label class="col-form-label" for="brand">Modifier la marque :</label>
-                                        <input type="text" class="form-control" placeholder="Audi" id="brand" name="brand" minlength="2" maxlength="30" required value="<?= $brand ?? '' ?>">
+                                        <input type="text" class="form-control" placeholder="Audi" id="brand" name="brand" minlength="2" maxlength="30" required value="<?= $vehicle->brand ?? '' ?>">
                                         <div>
                                             <small class="text-danger"><?= $error['brand'] ?? '' ?></small>
                                         </div>
                                         <!-- model -->
                                         <label class="col-form-label" for="model">Modifier le modèle :</label>
-                                        <input type="text" class="form-control" placeholder="a3" id="model" name="model" minlength="1" maxlength="30" required value="<?= $model ?? '' ?>">
+                                        <input type="text" class="form-control" placeholder="a3" id="model" name="model" minlength="1" maxlength="30" required value="<?= $vehicle->model ?? '' ?>">
                                         <div>
                                             <small class="text-danger"><?= $error['model'] ?? '' ?></small>
                                         </div>
@@ -44,19 +44,19 @@
                                         <div class="container__inputs--right--center">
                                             <!-- registration -->
                                             <label class="col-form-label" for="registration">Modifier la plaque d'immatriculation :</label>
-                                            <input type="text" class="form-control" placeholder="AB-123-CD" id="registration" name="registration" required value="<?= $registration ?? '' ?>">
+                                            <input type="text" class="form-control" placeholder="AB-123-CD" id="registration" name="registration" required value="<?= $vehicle->registration ?? '' ?>">
                                             <div>
                                                 <small class="text-danger"><?= $error['registration'] ?? '' ?></small>
                                             </div>
                                             <!-- mileage -->
                                             <label class="col-form-label" for="mileage">Modifier le Kilométrage :</label>
-                                            <input type="number" class="form-control" placeholder="12500" id="mileage" name="mileage" required value="<?= $mileage ?? '' ?>">
+                                            <input type="number" class="form-control" placeholder="12500" id="mileage" name="mileage" required value="<?= $vehicle->mileage ?? '' ?>">
                                             <div>
                                                 <small class="text-danger"><?= $error['mileage'] ?? '' ?></small>
                                             </div>
                                             <!-- picture (nullable) -->
                                             <label class="col-form-label label__pic" for="picture">Modifier la photo :</label>
-                                            <input type="file" class="form-control label__input" placeholder="Photo de la voiture" id="picture" name="picture" accept="image/png, image/jpeg">
+                                            <input type="file" class="form-control label__input" placeholder="Photo de la voiture" id="picture" name="picture" accept="image/png, image/jpeg" <?= $vehicle->picture ?? '' ?>>
                                             <div>
                                                 <small class="text-danger"><?= $error['picture'] ?? '' ?></small>
                                             </div>

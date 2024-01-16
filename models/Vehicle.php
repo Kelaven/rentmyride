@@ -24,7 +24,7 @@ class Vehicle
 
     // ! méthode magique
     public function __construct(
-        // int $id_vehicle = NULL, // pas utile de l'écrire
+        int $id_vehicle = NULL,
         string $brand = '',
         string $model = '',
         string $registration = '',
@@ -35,7 +35,7 @@ class Vehicle
         ?string $deleted_at = NULL,
         ?int $id_category = NULL
     ) {
-        // $this->id_vehicle = $id_vehicle;
+        $this->id_vehicle = $id_vehicle;
         $this->brand = $brand; // ? il vaudrait mieux utiliser ici les setters
         $this->model = $model;
         $this->registration = $registration;
@@ -268,6 +268,31 @@ class Vehicle
         $sth->bindValue(':id_vehicle', $this->getIdVehicle());
 
         $result = $sth->execute();
+
+        return $result;
+    }
+
+    // ! méthode get()
+    /**
+     * méthode pour récupérer les informations de la catégorie séléctionnée pour la modifier (update)
+     * @param int $id
+     * 
+     * @return object
+     */
+    public static function get(?int $id): object|false // méthode pour update, afin de récupérer les infos de l'id sélectionné
+    {
+        $pdo = Database::connect();
+
+        $sql = 'SELECT * FROM `vehicles`
+        WHERE id_vehicle = :id_vehicle;';
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->bindValue(':id_vehicle', $id, PDO::PARAM_INT); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier
+
+        $result = $sth->execute();
+
+        $result = $sth->fetch(PDO::FETCH_OBJ); // pour récupérer les données de l'objet portant l'id. Le fetch recupère la première info uniquement (contrairement au fetchAll qui récupère tout)
 
         return $result;
     }

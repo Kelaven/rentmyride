@@ -8,25 +8,26 @@ require_once __DIR__ . '/../../../models/Vehicle.php';
 
 
 
-$categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML)
-
-
+$categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML) => afficher la liste dans la vue
+$vehicles = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML) => afficher la liste dans la vue
+var_dump($vehicles);
 
 try {
     // modification du header
     $cssUpdateVehicles = 'updateVehicles.css';
     $title = 'Modification des véhicules';
-
-    // $id_category = intval(filter_input(INPUT_GET, 'id_category', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, 1 au lieu de "1"
-
-    // $category = Category::get($id_category); // on récupère toutes les propriétés de l'objet, issu de fetch (objet standard)
-    // // var_dump($category);
-    // if (!$category) { // si le résultat retourné est false
-    //     header('Location: /controllers/dashboard/categories/list-ctrl.php');
-    //     die;
-    // }
-
-
+    
+    $id_vehicle = intval(filter_input(INPUT_GET, 'id_vehicle', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, 1 au lieu de "1"
+    
+    $vehicle = Vehicle::get($id_vehicle); // on récupère toutes les propriétés de l'objet, issu de fetch (objet standard) => mémoriser les données pour les afficher dans la vue
+    // var_dump($vehicle);
+    
+    if (!$vehicle) { // si le résultat retourné est false
+        header('Location: /controllers/dashboard/vehicles/listVehicles-ctrl.php');
+        die;
+    }
+    
+    
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // * nettoyage et validation du form
         $error = [];
@@ -108,27 +109,29 @@ try {
                 $error['picture'] = $th->getMessage();
             }
         }
-
-
-
+        
+        
+        
         // if (Vehicle::isExist($brand, $model, $registration, $mileage, $categoriesId)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
-        //     $error['isExist'] = 'La donnée existe déjà';
-        // }
-
-
-
-        if (empty($error)) {
-
-            $vehicle = new Vehicle();
-
-            $vehicle->setBrand($brand);
-            $vehicle->setModel($model);
-            $vehicle->setRegistration($registration);
-            $vehicle->setMileage($mileage);
-            $vehicle->setPicture($picture);
-            $vehicle->setIdCategory($id_category);
-
-            $result = $vehicle->update();
+            //     $error['isExist'] = 'La donnée existe déjà';
+            // }
+            
+            
+            
+            if (empty($error)) {
+                
+                $vehicle = new Vehicle();
+                // var_dump($vehicle);
+                
+                $vehicle->setBrand($brand);
+                $vehicle->setModel($model);
+                $vehicle->setRegistration($registration);
+                $vehicle->setMileage($mileage);
+                $vehicle->setPicture($picture);
+                $vehicle->setIdVehicle($id_vehicle);
+                $vehicle->setIdCategory($id_category);
+                
+                $result = $vehicle->update();
 
             if ($result) {
                 $msg = 'La donnée a bien été modifiée ! Vous allez être redirigé(e).';
