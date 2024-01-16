@@ -49,6 +49,9 @@ class Vehicle
     }
 
 
+
+    ////////////// ! setters et getters ! //////////////
+
     // ! setter et getter id_vehicle :
     /**
      * Set the value of id_vehicle
@@ -224,16 +227,47 @@ class Vehicle
     }
 
     // ! méthode getAll()
-    public static function getAll(): array // méthode pour lire les données
+    public static function getAll(): array|false // méthode pour lire les données
     {
         $pdo = Database::connect();
 
         $sql = 'SELECT * FROM `vehicles`
-        LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`;';
+        LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+        ORDER BY `categories`.`name` ASC;'; // pour donner le choix à l'utilisateur : faire un lien à côté de Catégorie :, au clic générer une information dans l'URL, s'en servir dans la requête SQL avec un marqueur pour le ASC ou DESC.
 
         $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
 
         $result = $sth->fetchAll(PDO::FETCH_OBJ); // récupération des résultats sous forme d'objets grâce à FETCH_OBJ (par défaut c'est du tableau indexé associatif)
+
+        return $result;
+    }
+
+    // ! méthode update()
+    public function update() // méthode pour modifier les données
+    {
+        $pdo = Database::connect();
+
+        $sql = "UPDATE `vehicles` 
+                SET `brand` = :brand, 
+                    `model` = :model,
+                    `registration`= :registration,
+                    `mileage` = :mileage,
+                    `picture` = :picture,
+                    `id_category` = :id_category
+                WHERE `id_vehicle` = :id_vehicle;";
+
+        $sth = $pdo->prepare($sql);
+
+
+        $sth->bindValue(':brand', $this->getBrand());
+        $sth->bindValue(':model', $this->getModel());
+        $sth->bindValue(':registration', $this->getRegistration());
+        $sth->bindValue(':mileage', $this->getMileage(), PDO::PARAM_INT);
+        $sth->bindValue(':picture', $this->getPicture());
+        $sth->bindValue(':id_category', $this->getIdCategory());
+        $sth->bindValue(':id_vehicle', $this->getIdVehicle());
+
+        $result = $sth->execute();
 
         return $result;
     }

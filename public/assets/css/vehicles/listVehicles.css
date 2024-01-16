@@ -57,3 +57,7 @@ th::first-letter, td::first-letter{
 .registration__style{
     text-transform: uppercase;
 }
+.listVehicles__pic{
+    max-width: 50px;
+    max-height: 50px;
+}

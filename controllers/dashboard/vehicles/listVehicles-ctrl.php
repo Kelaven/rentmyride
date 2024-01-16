@@ -4,15 +4,13 @@
 
 // ! fichier init
 
-require_once __DIR__ . '/../../../config/init.php';
-require_once __DIR__ . '/../../../models/Category.php';
 require_once __DIR__ . '/../../../models/Vehicle.php';
 
 
 
 try {
     // * modification du header
-    $cssCategories = 'listVehicles.css';
+    $cssReadVehicles = 'listVehicles.css';
     $title = 'Consultation des véhicules';
 
     // * pour afficher les véhicules

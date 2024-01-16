@@ -1,0 +1,66 @@
+#container__form{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#container__form .card{
+    min-width: 50vw;
+}
+
+input::placeholder{
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+button:hover{
+    background-color: #52585C !important;
+}
+
+#container__form{
+    height: 100vh;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+}
+
+#container__form .card{
+    min-width: 50vw;
+}
+
+input::placeholder{
+    font-style: italic;
+    font-size: 0.9em;
+}
+
+button:hover{
+    background-color: #52585C !important;
+}
+
+.container__inputs{
+    /* background-color: red; */
+    display: flex;
+    justify-content: space-between;
+}
+.container__inputs--left{
+    /* background-color: blue; */
+    flex: 1;
+    padding-right: 20px;
+}
+.container__inputs--right{
+    /* background-color: bisque; */
+    flex: 1;
+    padding-left: 20px;
+    display: flex;
+    align-items: center;
+}
+
+.container__btn{
+    display: flex;
+    justify-content: center;
+}
+.msg__nb{
+    font-style: italic;
+    font-size: 0.8em;
+}

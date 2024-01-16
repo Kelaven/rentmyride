@@ -26,6 +26,7 @@
                                 <th>Catégorie :</th>
                                 <th>Marque :</th>
                                 <th>Modèle :</th>
+                                <th>Image :</th>
                                 <th></th> <!-- modifier -->
                                 <th></th> <!-- supprimer -->
                             </tr>
@@ -35,8 +36,11 @@
                                     <td> <?= $vehicle->name; ?> </td>
                                     <td> <?= $vehicle->brand; ?> </td>
                                     <td> <?= $vehicle->model; ?> </td>
+                                    <td> <?php if (!empty($vehicle->picture)) { ?>
+                                        <img class="listVehicles__pic" src="/public/uploads/users/<?= $vehicle->picture ?>">
+                                    <?php }  ?></td>
                                     <td>
-                                        <a href="#" data-bs-toggle="tooltip" data-bs-title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a>
+                                        <a href="/controllers/dashboard/vehicles/updateVehicles-ctrl.php?id_vehicle=<?= $vehicle->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a>
                                     </td>
                                     <td class="text-end">
                                         <a href="#" class="delete__link" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a>

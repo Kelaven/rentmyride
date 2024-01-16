@@ -7,15 +7,28 @@ require_once __DIR__ . '/../../../models/Category.php';
 require_once __DIR__ . '/../../../models/Vehicle.php';
 
 
+
 $categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML)
 
 
-try {
-    $cssAddVehicles = 'addVehicles.css';
-    $title = 'Ajout d\'un véhicule';
 
-    // * nettoyage et validation
+try {
+    // modification du header
+    $cssUpdateVehicles = 'updateVehicles.css';
+    $title = 'Modification des véhicules';
+
+    // $id_category = intval(filter_input(INPUT_GET, 'id_category', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, 1 au lieu de "1"
+
+    // $category = Category::get($id_category); // on récupère toutes les propriétés de l'objet, issu de fetch (objet standard)
+    // // var_dump($category);
+    // if (!$category) { // si le résultat retourné est false
+    //     header('Location: /controllers/dashboard/categories/list-ctrl.php');
+    //     die;
+    // }
+
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        // * nettoyage et validation du form
         $error = [];
         // id_category
         $id_category = filter_input(INPUT_POST, 'id_category', FILTER_SANITIZE_NUMBER_INT);
@@ -96,58 +109,46 @@ try {
             }
         }
 
-            // * vérification si la donnée existe
-            if (!empty($brand) && !empty($model) && !empty($registration) && !empty($mileage)) {
-                if (Vehicle::isExist($brand, $model, $registration, $mileage, $id_category)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
-                    $error['isExist'] = 'La donnée existe déjà.';
-                }
-            }
+
+
+        // if (Vehicle::isExist($brand, $model, $registration, $mileage, $categoriesId)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
+        //     $error['isExist'] = 'La donnée existe déjà';
+        // }
 
 
 
         if (empty($error)) {
 
-            // * envoi en BDD
             $vehicle = new Vehicle();
 
-            $vehicle->setBrand($brand); // j'ai utilisé les setters mais j'aurais aussi pu utiliser la méthode magique construct
+            $vehicle->setBrand($brand);
             $vehicle->setModel($model);
             $vehicle->setRegistration($registration);
             $vehicle->setMileage($mileage);
-            // if (isset($picture)) { // j'ai pu retirer la condition en définissant "null" à $picture avant de traiter celle qui aurait été envoyée par l'utilisateur
-                $vehicle->setPicture($picture);
-            // }
+            $vehicle->setPicture($picture);
             $vehicle->setIdCategory($id_category);
 
-            $result = $vehicle->insert();
+            $result = $vehicle->update();
 
             if ($result) {
-                $msg = 'La donnée a bien été insérée ! Vous pouvez en saisir une autre.';
+                $msg = 'La donnée a bien été modifiée ! Vous allez être redirigé(e).';
+                header("Refresh: 3, url='/controllers/dashboard/vehicles/listVehicles-ctrl.php'");
             } else {
-                $msg = 'Erreur, la donnée n\'a pas été insérée. Veuillez réessayer.';
+                $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
             }
         }
-
-
-
     }
-
-
-
-
-
-
-
-} catch (Throwable $e) {
-    echo "Erreur : " . $e->getMessage();
+} catch (\Throwable $th) {
+    echo "Erreur : " . $th->getMessage();
 }
 
 
+// $category = Category::get($id_category); // je récupère mon objet avec toutes les modifications précédentes
 
 
 
 // ! views
 
 include __DIR__ . '/../../../views/templates/dashboard/header.php';
-include __DIR__ . '/../../../views/dashboard/vehicles/addVehicles.php';
+include __DIR__ . '/../../../views/dashboard/vehicles/updateVehicles.php';
 include __DIR__ . '/../../../views/templates/dashboard/footer.php';

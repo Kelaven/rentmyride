@@ -21,7 +21,21 @@
     ?>
         <link rel="stylesheet" href="/public/assets/css/vehicles/<?= $cssVehicles ?>">
     <?php } ?>
-
+    <?php
+    if (isset($cssAddVehicles)) {
+    ?>
+        <link rel="stylesheet" href="/public/assets/css/vehicles/<?= $cssAddVehicles ?>">
+    <?php } ?>
+    <?php
+    if (isset($cssReadVehicles)) {
+    ?>
+        <link rel="stylesheet" href="/public/assets/css/vehicles/<?= $cssReadVehicles ?>">
+    <?php } ?>
+    <?php
+    if (isset($cssUpdateVehicles)) {
+    ?>
+        <link rel="stylesheet" href="/public/assets/css/vehicles/<?= $cssUpdateVehicles ?>">
+    <?php } ?>
 
 
 </head>
