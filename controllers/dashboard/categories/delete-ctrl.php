@@ -1,5 +1,7 @@
 <?php
+
 session_start(); // on va utiliser les sessions
+
 
 // ! fichier init
 

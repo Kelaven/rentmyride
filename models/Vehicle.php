@@ -202,13 +202,13 @@ class Vehicle
     }
 
     // ! méthode isExist()
-    public static function isExist(string $brand, string $model, string $registration, int $mileage, string $picture, int $id_category)
+    public static function isExist(string $brand, string $model, string $registration, int $mileage, int $id_category)
     {
         $pdo = Database::connect();
 
         $sql = 'SELECT `brand`, `model`, `registration`, `mileage`, `picture`, `id_category`
         FROM `vehicles`
-        WHERE `brand` = :brand AND `model` = :model AND `registration` = :registration AND `mileage` = :mileage AND `picture` = :picture AND `id_category` = :id_category;';
+        WHERE `brand` = :brand AND `model` = :model AND `registration` = :registration AND `mileage` = :mileage AND `id_category` = :id_category;';
 
         $sth = $pdo->prepare($sql);
 
@@ -216,7 +216,6 @@ class Vehicle
         $sth->bindValue(':model', $model);
         $sth->bindValue(':registration', $registration);
         $sth->bindValue(':mileage', $mileage, PDO::PARAM_INT);
-        $sth->bindValue(':picture', $picture);
         $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT);
 
         $result = $sth->execute(); // retourne true ou false, à compléter avec fetch
@@ -318,6 +317,22 @@ class Vehicle
         $result = $sth->execute();
 
         $result = $sth->fetch(PDO::FETCH_OBJ); // pour récupérer les données de l'objet portant l'id. Le fetch recupère la première info uniquement (contrairement au fetchAll qui récupère tout)
+
+        return $result;
+    }
+
+    // ! méthode delete()
+    public static function delete(int $id){
+        $pdo = Database::connect();
+
+        $sql = 'DELETE FROM `vehicles`
+        WHERE `id_vehicle` = :id_vehicle;';
+        
+        $sth = $pdo->prepare($sql);
+
+        $sth->bindValue(':id_vehicle', $id, PDO::PARAM_INT);
+
+        $result = $sth->execute();
 
         return $result;
     }

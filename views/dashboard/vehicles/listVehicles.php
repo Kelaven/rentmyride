@@ -19,7 +19,7 @@
                     </div>
                     <div class="card-body p-5 pt-3">
                         <p class="text-info">
-                            <!-- <?= $msg ?> -->
+                            <?= $msg ?? ''?>
                         </p>
                         <table class="">
                             <tr>
@@ -43,7 +43,7 @@
                                         <a href="/controllers/dashboard/vehicles/updateVehicles-ctrl.php?id_vehicle=<?= $vehicle->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a>
                                     </td>
                                     <td class="text-end">
-                                        <a href="#" class="delete__link" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a>
+                                        <a class="delete__link" data-delete="<?= $vehicle->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a>
                                     </td>
                                 </tr>
                             <?php }

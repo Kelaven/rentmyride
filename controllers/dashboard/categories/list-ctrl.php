@@ -1,4 +1,10 @@
 <?php
+
+
+$scriptJS = 'script.js';
+
+
+
 session_start();
 
 

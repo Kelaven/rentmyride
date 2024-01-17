@@ -1,5 +1,9 @@
 <?php
-// session_start();
+
+$scriptVehiclesJS = 'scriptVehicles.js';
+
+
+session_start();
 
 
 // ! fichier init
@@ -18,13 +22,15 @@ try {
     // var_dump($vehicles);
 
 
-    // // * afficher le msg de suppression
-    // // $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);
-    // $msg = filter_var($_SESSION['msg'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
+    // * afficher le msg de suppression
+    // $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);
+    // var_dump($msg);
 
-    // if (isset($_SESSION['msg'])) {
-    //     unset($_SESSION['msg']); // une fois que le message a été affiché, on le retire de la session pour pas qu'il reste tout le temps)
-    // }
+    $msg = filter_var($_SESSION['msg'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    if (isset($_SESSION['msg'])) {
+        unset($_SESSION['msg']); // une fois que le message a été affiché, on le retire de la session pour pas qu'il reste tout le temps)
+    }
 
 
 } catch (\Throwable $th) {
