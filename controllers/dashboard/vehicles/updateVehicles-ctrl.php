@@ -9,25 +9,18 @@ require_once __DIR__ . '/../../../models/Vehicle.php';
 
 
 $categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML) => afficher la liste dans la vue
-$vehicles = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML) => afficher la liste dans la vue
-var_dump($vehicles);
+// $vehicles = Vehicle::getAll();
+
 
 try {
     // modification du header
     $cssUpdateVehicles = 'updateVehicles.css';
     $title = 'Modification des véhicules';
-    
+
     $id_vehicle = intval(filter_input(INPUT_GET, 'id_vehicle', FILTER_SANITIZE_NUMBER_INT)); // récupérer la donnée tout en la nettoyant, ne pas utiliser $_GET. intval permet de retourner un entier dans tous les cas, 1 au lieu de "1"
-    
-    $vehicle = Vehicle::get($id_vehicle); // on récupère toutes les propriétés de l'objet, issu de fetch (objet standard) => mémoriser les données pour les afficher dans la vue
-    // var_dump($vehicle);
-    
-    if (!$vehicle) { // si le résultat retourné est false
-        header('Location: /controllers/dashboard/vehicles/listVehicles-ctrl.php');
-        die;
-    }
-    
-    
+
+    $vehicle = Vehicle::get($id_vehicle); // récupérer les infos avant leur entrée dans la BDD, nécessaire pour la méthode isExist
+
     if ($_SERVER["REQUEST_METHOD"] == "POST") {
         // * nettoyage et validation du form
         $error = [];
@@ -37,6 +30,8 @@ try {
             $error['id_category'] = 'Le champ ne peut pas être vide.';
         } else {
             $categoriesId = array_column($categories, 'id_category'); // création d'un tableau contenant les ID pour vérifier qu'un ID entré par un utilisateur corresponde bien à l'un des ID qui existent dans notre BDD
+            // var_dump($categoriesId);
+            // die;
             $isOk = in_array($id_category, $categoriesId); // réponds true si l'id correspond bien à l'un de nos ID existant dans la BDD => pas besoin de filtre de validation
             if (!$isOk) {
                 $error['id_category'] = 'Erreur, le choix est invalide.';
@@ -84,7 +79,7 @@ try {
         }
         // picture
         $picture = null;
-        if (isset($_FILES['picture']) && ($_FILES['picture']['size'] != 0)) {
+        if (isset($_FILES['picture']) && ($_FILES['picture']['size'] != 0)) { // si l'utilisateur rentre une image dans le formulaire
             try {
                 if (!isset($_FILES['picture'])) {
                     throw new Exception("Le champ picture n'existe pas.");
@@ -108,30 +103,36 @@ try {
             } catch (\Throwable $th) {
                 $error['picture'] = $th->getMessage();
             }
+        } else {
+            $existingPicture = Vehicle::getPictureUpdate($id_vehicle); // sinon si l'utilisateur n'en rentre pas et qu'il en existe déjà une dans la BDD => récupérer la photo existante du véhicule
+            // var_dump($existingPicture);
+            if (!empty($existingPicture)) { // s'il y a bien une image en BDD
+                $picture = $existingPicture->picture;
+            }
         }
-        
-        
-        
-        // if (Vehicle::isExist($brand, $model, $registration, $mileage, $categoriesId)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
-            //     $error['isExist'] = 'La donnée existe déjà';
-            // }
-            
-            
-            
-            if (empty($error)) {
-                
-                $vehicle = new Vehicle();
-                // var_dump($vehicle);
-                
-                $vehicle->setBrand($brand);
-                $vehicle->setModel($model);
-                $vehicle->setRegistration($registration);
-                $vehicle->setMileage($mileage);
-                $vehicle->setPicture($picture);
-                $vehicle->setIdVehicle($id_vehicle);
-                $vehicle->setIdCategory($id_category);
-                
-                $result = $vehicle->update();
+
+
+
+        if (Vehicle::isExist($brand, $model, $registration, $mileage, $picture, $id_category)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
+                $error['isExist'] = 'La donnée existe déjà';
+            }
+
+
+        if (empty($error)) {
+
+            $vehicle = new Vehicle(); // objet issu d'une classe donc privé (car utilisation de private)
+            // var_dump($vehicle);
+
+            $vehicle->setBrand($brand);
+            $vehicle->setModel($model);
+            $vehicle->setRegistration($registration);
+            $vehicle->setMileage($mileage);
+            $vehicle->setPicture($picture);
+            $vehicle->setIdVehicle($id_vehicle);
+            $vehicle->setIdCategory($id_category);
+
+            $result = $vehicle->update();
+
 
             if ($result) {
                 $msg = 'La donnée a bien été modifiée ! Vous allez être redirigé(e).';
@@ -140,6 +141,14 @@ try {
                 $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
             }
         }
+    }
+
+    $vehicle = Vehicle::get($id_vehicle); // ! on récupère toutes les propriétés de l'objet après son hydratation, issu de fetch (méthode public) => mémoriser les données pour les afficher dans la vue. De plus, il faut bien utiliser les informations après leur bon enregistrement dans la BDD.
+
+
+    if (!$vehicle) { // si le résultat retourné est false
+        header('Location: /controllers/dashboard/vehicles/listVehicles-ctrl.php');
+        die;
     }
 } catch (\Throwable $th) {
     echo "Erreur : " . $th->getMessage();

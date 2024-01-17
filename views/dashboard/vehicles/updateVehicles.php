@@ -20,9 +20,7 @@
                                             <select class="form-select" id="id_category" name="id_category">
                                                 <?php
                                                 foreach ($categories as $category) { ?>
-                                                    <option value="<?= $category->id_category ?>"<?php if ((isset($id_category)) && ($id_category == $category->id_category)) { ?>
-                                                        selected
-                                                    <?php } ?>><?= ucfirst($category->name) ?></option>
+                                                    <option value="<?= $category->id_category ?>" <?php if ($category->id_category == $vehicle->id_category) { ?> selected <?php } ?>><?= ucfirst($category->name) ?></option>
                                                 <?php }
                                                 ?>
                                             </select>
