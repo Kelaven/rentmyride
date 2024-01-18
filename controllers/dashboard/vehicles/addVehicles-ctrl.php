@@ -98,7 +98,7 @@ try {
 
             // * vérification si la donnée existe
             if (!empty($brand) && !empty($model) && !empty($registration) && !empty($mileage)) {
-                if (Vehicle::isExist($brand, $model, $registration, $mileage, $id_category)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
+                if (Vehicle::isExist($brand, $model, $registration, $mileage, $picture, $id_category)) { // vérifier si la catégorie existe déjà, si la méthode retourne vrai
                     $error['isExist'] = 'La donnée existe déjà.';
                 }
             }

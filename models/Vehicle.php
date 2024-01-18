@@ -272,7 +272,7 @@ class Vehicle
         return $result;
     }
 
-    // ! méthode get()
+    // ! méthode get
     /**
      * méthode pour récupérer les informations de la catégorie séléctionnée pour la modifier (update)
      * @param int $id
@@ -297,14 +297,14 @@ class Vehicle
         return $result;
     }
 
-    // ! méthode getPictureUpdate()
+    // ! méthode getPictureUpdate
     /**
      * méthode pour récupérer les informations de la catégorie séléctionnée pour la modifier (update)
      * @param int $id
      * 
      * @return object
      */
-    public static function getPictureUpdate(?string $id): object|false // méthode pour update, afin de récupérer les infos de la picture existante en BDD
+    public static function getPictureUpdate(?int $id): object|false // méthode pour update, afin de récupérer les infos de la picture existante en BDD
     {
         $pdo = Database::connect();
 
@@ -322,7 +322,7 @@ class Vehicle
         return $result;
     }
 
-    // ! méthode delete()
+    // ! méthode delete
     public static function delete(int $id){
         $pdo = Database::connect();
 

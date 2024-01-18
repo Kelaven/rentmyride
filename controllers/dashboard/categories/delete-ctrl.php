@@ -16,6 +16,7 @@ try {
 
 
     if ($delete) {
+
         $msg = 'La donnée a bien été supprimée !';
 
         $_SESSION['msg'] = $msg; // $_SESSION est un tableau
