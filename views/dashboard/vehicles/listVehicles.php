@@ -19,11 +19,11 @@
                     </div>
                     <div class="card-body p-5 pt-3">
                         <p class="text-info">
-                            <?= $msg ?? ''?>
+                            <?= $msg ?? '' ?>
                         </p>
                         <table class="">
                             <tr>
-                                <th>Catégorie :</th>
+                                <th>Catégorie <a href="/controllers//dashboard//vehicles/listVehicles-ctrl.php?click=1" data-bs-toggle="tooltip" data-bs-title="Ordre alphabétique"><i class="fa-solid fa-caret-up pe-2"></i></a><a href="/controllers//dashboard//vehicles/listVehicles-ctrl.php?click=2" data-bs-toggle="tooltip" data-bs-title="Désordre alphabétique"><i class="fa-solid fa-caret-down"></i></a></th>
                                 <th>Marque :</th>
                                 <th>Modèle :</th>
                                 <th>Image :</th>
@@ -37,8 +37,9 @@
                                     <td> <?= $vehicle->brand; ?> </td>
                                     <td> <?= $vehicle->model; ?> </td>
                                     <td> <?php if (!empty($vehicle->picture)) { ?>
-                                        <img class="listVehicles__pic" src="/public/uploads/users/<?= $vehicle->picture ?>">
-                                    <?php }  ?></td>
+                                            <img class="listVehicles__pic" src="/public/uploads/users/<?= $vehicle->picture ?>">
+                                        <?php }  ?>
+                                    </td>
                                     <td>
                                         <a href="/controllers/dashboard/vehicles/updateVehicles-ctrl.php?id_vehicle=<?= $vehicle->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a>
                                     </td>
@@ -49,8 +50,6 @@
                             <?php }
                             ?>
                         </table>
-
-
                         </ul>
                     </div>
                 </div>

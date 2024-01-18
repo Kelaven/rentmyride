@@ -222,13 +222,19 @@ class Vehicle
     }
 
     // ! méthode getAll
-    public static function getAll(): array|false // méthode pour lire les données
+    public static function getAll($clickAscOrDesc): array|false // méthode pour lire les données
     {
         $pdo = Database::connect();
 
-        $sql = 'SELECT * FROM `vehicles`
-        LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-        ORDER BY `categories`.`name` ASC;'; // pour donner le choix à l'utilisateur : faire un lien à côté de Catégorie :, au clic générer une information dans l'URL, s'en servir dans la requête SQL avec un marqueur pour le ASC ou DESC.
+        if ($clickAscOrDesc === 2) {
+            $sql = 'SELECT * FROM `vehicles`
+            LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+            ORDER BY `categories`.`name` DESC;';
+        } else {
+            $sql = 'SELECT * FROM `vehicles`
+            LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+            ORDER BY `categories`.`name` ASC;';
+        }
 
         $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
 

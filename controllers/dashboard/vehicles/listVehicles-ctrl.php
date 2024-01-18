@@ -18,8 +18,16 @@ try {
     $title = 'Consultation des véhicules';
 
     // * pour afficher les véhicules
-    $vehicles = Vehicle::getAll();
-    // var_dump($vehicles);
+
+    $clickAscOrDesc = intval(filter_input(INPUT_GET, 'click', FILTER_SANITIZE_NUMBER_INT));
+    // var_dump($clickAscOrDesc);
+
+    if ($clickAscOrDesc === 2) {
+        $vehicles = Vehicle::getAll($clickAscOrDesc);
+    } else {
+        $vehicles = Vehicle::getAll($clickAscOrDesc);
+    }
+
 
 
     // * afficher le msg de suppression
