@@ -202,31 +202,26 @@ class Vehicle
     }
 
     // ! méthode isExist()
-    public static function isExist(string $brand, string $model, string $registration, int $mileage, ?string $picture, int $id_category)
+    public static function isExist(string $registration): bool
     {
         $pdo = Database::connect();
 
-        $sql = 'SELECT `brand`, `model`, `registration`, `mileage`, `picture`, `id_category`
+        $sql = 'SELECT COUNT(`id_vehicle`) AS "count"
         FROM `vehicles`
-        WHERE `brand` = :brand AND `model` = :model AND `registration` = :registration AND `mileage` = :mileage AND `picture` = :picture AND `id_category` = :id_category;';
+        WHERE `registration` = :registration;'; // on compte le nbe de lignes identiques
 
         $sth = $pdo->prepare($sql);
 
-        $sth->bindValue(':brand', $brand);
-        $sth->bindValue(':model', $model);
         $sth->bindValue(':registration', $registration);
-        $sth->bindValue(':mileage', $mileage, PDO::PARAM_INT);
-        $sth->bindValue(':picture', $picture);
-        $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT);
 
-        $result = $sth->execute(); // retourne true ou false, à compléter avec fetch
+        $result = $sth->execute(); // retourne true ou false sur la bonne exécution de la requête
 
-        $result = $sth->fetch(PDO::FETCH_OBJ);
+        $result = $sth->fetchColumn(); // on récupère la valeur retournée par le COUNT (si on obtient 0 c'est false sinon c'est true)
 
-        return $result;
+        return (bool) $result > 0; // donc retourne true si c'est supérieur à 0
     }
 
-    // ! méthode getAll()
+    // ! méthode getAll
     public static function getAll(): array|false // méthode pour lire les données
     {
         $pdo = Database::connect();
@@ -242,7 +237,7 @@ class Vehicle
         return $result;
     }
 
-    // ! méthode update()
+    // ! méthode update
     public function update() // méthode pour modifier les données
     {
         $pdo = Database::connect();
@@ -264,8 +259,8 @@ class Vehicle
         $sth->bindValue(':registration', $this->getRegistration());
         $sth->bindValue(':mileage', $this->getMileage(), PDO::PARAM_INT);
         $sth->bindValue(':picture', $this->getPicture());
-        $sth->bindValue(':id_category', $this->getIdCategory());
-        $sth->bindValue(':id_vehicle', $this->getIdVehicle());
+        $sth->bindValue(':id_category', $this->getIdCategory(), PDO::PARAM_INT);
+        $sth->bindValue(':id_vehicle', $this->getIdVehicle(), PDO::PARAM_INT);
 
         $result = $sth->execute();
 
@@ -297,30 +292,30 @@ class Vehicle
         return $result;
     }
 
-    // ! méthode getPictureUpdate
-    /**
-     * méthode pour récupérer les informations de la catégorie séléctionnée pour la modifier (update)
-     * @param int $id
-     * 
-     * @return object
-     */
-    public static function getPictureUpdate(?int $id): object|false // méthode pour update, afin de récupérer les infos de la picture existante en BDD
-    {
-        $pdo = Database::connect();
+    // // ! méthode getPictureUpdate
+    // /**
+    //  * méthode pour récupérer les informations de la catégorie séléctionnée pour la modifier (update)
+    //  * @param int $id
+    //  * 
+    //  * @return object
+    //  */
+    // public static function getPictureUpdate(?int $id): object|false // méthode pour update, afin de récupérer les infos de la picture existante en BDD
+    // {
+    //     $pdo = Database::connect();
 
-        $sql = 'SELECT `picture` FROM `vehicles`
-        WHERE id_vehicle = :id_vehicle;';
+    //     $sql = 'SELECT `picture` FROM `vehicles`
+    //     WHERE id_vehicle = :id_vehicle;';
 
-        $sth = $pdo->prepare($sql);
+    //     $sth = $pdo->prepare($sql);
 
-        $sth->bindValue(':id_vehicle', $id, PDO::PARAM_INT); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier
+    //     $sth->bindValue(':id_vehicle', $id, PDO::PARAM_INT); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier
 
-        $result = $sth->execute();
+    //     $result = $sth->execute();
 
-        $result = $sth->fetch(PDO::FETCH_OBJ); // pour récupérer les données de l'objet portant l'id. Le fetch recupère la première info uniquement (contrairement au fetchAll qui récupère tout)
+    //     $result = $sth->fetch(PDO::FETCH_OBJ); // pour récupérer les données de l'objet portant l'id. Le fetch recupère la première info uniquement (contrairement au fetchAll qui récupère tout)
 
-        return $result;
-    }
+    //     return $result;
+    // }
 
     // ! méthode delete
     public static function delete(int $id){

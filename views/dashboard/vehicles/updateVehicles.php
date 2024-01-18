@@ -54,7 +54,8 @@
                                             </div>
                                             <!-- picture (nullable) -->
                                             <label class="col-form-label label__pic" for="picture">Modifier la photo :</label>
-                                            <input type="file" class="form-control label__input" placeholder="Photo de la voiture" id="picture" name="picture" accept="image/png, image/jpeg" <?= $vehicle->picture ?? '' ?>>
+                                            <input type="file" class="form-control label__input" placeholder="Photo de la voiture" id="picture" name="picture" accept="image/png, image/jpeg">
+                                            <img class="listVehicles__pic" src="/public/uploads/users/<?= $vehicle->picture ?>">
                                             <div>
                                                 <small class="text-danger"><?= $error['picture'] ?? '' ?></small>
                                             </div>

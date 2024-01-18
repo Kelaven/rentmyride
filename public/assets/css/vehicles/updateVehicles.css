@@ -64,3 +64,7 @@ button:hover{
     font-style: italic;
     font-size: 0.8em;
 }
+.listVehicles__pic{
+    max-height: 50px;
+    max-width: 50px;
+}
