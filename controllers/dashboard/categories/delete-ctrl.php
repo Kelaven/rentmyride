@@ -31,7 +31,7 @@ die;
     }
 } catch (\Throwable $th) {
     $errorCode = intval($th->getCode());
-    var_dump($errorCode);
+    // var_dump($errorCode);
     if ($errorCode === 23000) {
         $msg = 'Erreur ! La catégorie n\'a pas été supprimée car elle contient un ou plusieurs véhicules.';
         $_SESSION['msg'] = $msg;
