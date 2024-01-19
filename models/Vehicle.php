@@ -229,10 +229,12 @@ class Vehicle
         if ($clickAscOrDesc === 2) {
             $sql = 'SELECT * FROM `vehicles`
             LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+            WHERE `vehicles`.`deleted_at` IS NULL
             ORDER BY `categories`.`name` DESC;';
         } else {
             $sql = 'SELECT * FROM `vehicles`
             LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+            WHERE `vehicles`.`deleted_at` IS NULL
             ORDER BY `categories`.`name` ASC;';
         }
 
@@ -335,6 +337,46 @@ class Vehicle
         $sth->bindValue(':id_vehicle', $id, PDO::PARAM_INT);
 
         $result = $sth->execute();
+
+        return $result;
+    }
+
+    // ! méthode archive
+    public static function archive(int $id){
+        $pdo = Database::connect();
+
+        $sql = 'UPDATE `vehicles` 
+        SET `deleted_at` = NOW()
+        WHERE `id_vehicle` = :id_vehicle;';
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->bindValue(':id_vehicle', $id, PDO::PARAM_INT);
+
+        $result = $sth->execute();
+
+        return $result;
+    }
+    // ! méthode get archived
+    public static function getArchived($clickAscOrDesc): array|false // méthode pour lire les données
+    {
+        $pdo = Database::connect();
+
+        if ($clickAscOrDesc === 2) {
+            $sql = 'SELECT * FROM `vehicles`
+            LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+            WHERE `vehicles`.`deleted_at` > 0
+            ORDER BY `categories`.`name` DESC;';
+        } else {
+            $sql = 'SELECT * FROM `vehicles`
+            LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+            WHERE `vehicles`.`deleted_at` > 0
+            ORDER BY `categories`.`name` ASC;';
+        }
+
+        $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
+
+        $result = $sth->fetchAll(PDO::FETCH_OBJ); // récupération des résultats sous forme d'objets grâce à FETCH_OBJ (par défaut c'est du tableau indexé associatif)
 
         return $result;
     }

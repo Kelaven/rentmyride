@@ -3,8 +3,12 @@
         <div class="row pt-5">
             <div class="col pt-5">
                 <!-- bouton de redirection pour ajouter une catégorie -->
-                <a href="/controllers/dashboard/vehicles/addVehicles-ctrl.php">
-                    <button type="button" class="btn btn-dark"><i class="fa-solid fa-plus pe-3"></i>Ajouter un véhicule</button>
+                <a href="/controllers/dashboard/vehicles/addVehicles-ctrl.php" class="btn btn-dark">
+                    <i class="fa-solid fa-plus pe-3"></i>Ajouter un véhicule
+                </a>
+                <!-- bouton archives -->
+                <a href="/controllers/dashboard/vehicles/archiveVehicles-ctrl.php" class="btn btn-dark">
+                <i class="fa-solid fa-box pe-3"></i></i>Accèder aux archives
                 </a>
             </div>
         </div>
@@ -44,7 +48,8 @@
                                         <a href="/controllers/dashboard/vehicles/updateVehicles-ctrl.php?id_vehicle=<?= $vehicle->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a>
                                     </td>
                                     <td class="text-end">
-                                        <a class="delete__link" data-delete="<?= $vehicle->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a>
+                                        <!-- <a class="delete__link" data-delete="<?= $vehicle->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a> -->
+                                        <a href="/controllers/dashboard/vehicles/archiveVehicles-ctrl.php?id_vehicle=<?= $vehicle->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Archiver"><i class="fa-solid fa-box"></i></a>
                                     </td>
                                 </tr>
                             <?php }
