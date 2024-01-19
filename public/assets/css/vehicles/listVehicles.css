@@ -58,6 +58,7 @@ th::first-letter, td::first-letter{
     text-transform: uppercase;
 }
 .listVehicles__pic{
-    max-width: 50px;
-    max-height: 50px;
+    width: 50px;
+    height: 50px;
+    object-fit: cover;
 }

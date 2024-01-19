@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../config/init.php';
 require_once __DIR__ . '/../../../models/Category.php';
 
 
-
+$sidebar = 'ok';
 
 
 try {
@@ -58,6 +58,7 @@ try {
                 $msg = 'La donnée a bien été modifiée ! Vous allez être redirigé(e).';
                 // header('Location: /controllers/dashboard/categories/list-ctrl.php');
                 header("Refresh: 3, url='/controllers/dashboard/categories/list-ctrl.php'");
+                // die;
             } else {
                 $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';
             }

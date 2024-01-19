@@ -43,11 +43,12 @@
 <body>
 
     <!-- Sidebar -->
-    <section>
+    <?php if (isset($sidebar)) { ?>
+        <section>
         <div id="container__sidebar">
             <ul class="sidebar__nav">
                 <li class="sidebar__nav--title pt-3">
-                    <a href="#">Dashboard</a>
+                    <a href="/controllers/dashboard/vehicles/listVehicles-ctrl.php">Dashboard</a>
                 </li>
                 <hr class="mb-0 mt-2 py-3">
                 <li>
@@ -60,6 +61,8 @@
                     <a href="#" class="sidebar__nav--tabs"><i class="fa-solid fa-road pe-2"></i>Réservations</a>
                 </li>
             </ul>
+            <a class="btn btn-primary btn__home" href="/controllers/front/home-ctrl.php">page d'accueil</a>
         </div>
-
     </section>
+    <?php } ?>
+    

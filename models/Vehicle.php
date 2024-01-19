@@ -339,3 +339,30 @@ class Vehicle
         return $result;
     }
 }
+
+
+
+// SELECT `brand`, COUNT(`id_vehicle`) AS "Nombre de véhicules"
+// FROM `vehicles`
+// GROUP BY `brand`;
+
+
+// SELECT `categories`.`name`, COUNT(`vehicles`.`id_vehicle`) AS "Nombre de vehicules"
+// FROM `categories`
+// LEFT JOIN `vehicles` ON `categories`.`id_category` = `vehicles`.`id_category`
+// GROUP BY `categories`.`name`;
+
+
+// SELECT `categories`.`name`, COUNT(`vehicles`.`id_vehicle`) AS "nbveh" 
+// FROM `categories` 
+// JOIN `vehicles` ON `categories`.`id_category` = `vehicles`.`id_category` 
+// GROUP BY `categories`.`name`
+// HAVING `nbveh` > 2;
+
+
+// SELECT `categories`.`name`, COUNT(`vehicles`.`id_vehicle`) AS "nbveh" 
+// FROM `categories` 
+// JOIN `vehicles` ON `categories`.`id_category` = `vehicles`.`id_category` 
+// WHERE `categories`.`name` LIKE 'b%'
+// GROUP BY `categories`.`name` 
+// HAVING `nbveh` > 2;

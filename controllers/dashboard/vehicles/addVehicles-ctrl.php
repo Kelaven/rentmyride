@@ -6,6 +6,7 @@ require_once __DIR__ . '/../../../config/init.php';
 require_once __DIR__ . '/../../../models/Category.php';
 require_once __DIR__ . '/../../../models/Vehicle.php';
 
+$sidebar = 'ok';
 
 $categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML)
 

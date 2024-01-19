@@ -6,7 +6,7 @@
 require_once __DIR__ . '/../../../config/init.php';
 require_once __DIR__ . '/../../../models/Category.php';
 
-
+$sidebar = 'ok';
 
 
 try {

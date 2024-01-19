@@ -1,6 +1,7 @@
 <?php
 
 $scriptVehiclesJS = 'scriptVehicles.js';
+$sidebar = 'ok';
 
 
 session_start();

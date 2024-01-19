@@ -6,7 +6,7 @@ require_once __DIR__ . '/../../../config/init.php';
 require_once __DIR__ . '/../../../models/Category.php';
 require_once __DIR__ . '/../../../models/Vehicle.php';
 
-
+$sidebar = 'ok';
 
 // $vehicles = Vehicle::getAll();
 
@@ -137,7 +137,7 @@ try {
 
             if ($result) {
                 $msg = 'La donnée a bien été modifiée ! Vous allez être redirigé(e).';
-                // header("Refresh: 3, url='/controllers/dashboard/vehicles/listVehicles-ctrl.php'");
+                header("Refresh: 3, url='/controllers/dashboard/vehicles/listVehicles-ctrl.php'");
                 // die;
             } else {
                 $msg = 'Erreur, la donnée n\'a pas été modifiée. Veuillez réessayer.';

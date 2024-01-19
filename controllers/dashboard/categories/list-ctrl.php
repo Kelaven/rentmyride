@@ -4,6 +4,8 @@
 $scriptJS = 'script.js';
 
 
+$sidebar = 'ok';
+
 
 session_start();
 
