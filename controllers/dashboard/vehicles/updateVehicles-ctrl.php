@@ -8,7 +8,6 @@ require_once __DIR__ . '/../../../models/Vehicle.php';
 
 $sidebar = 'ok';
 
-// $vehicles = Vehicle::getAll();
 
 
 try {

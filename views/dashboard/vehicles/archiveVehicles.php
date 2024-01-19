@@ -38,10 +38,10 @@
                                         <?php }  ?>
                                     </td>
                                     <td>
-                                        <!-- <a href="/controllers/dashboard/vehicles/updateVehicles-ctrl.php?id_vehicle=<?= $vehicle->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Modifier"><i class="fa-solid fa-pen-to-square"></i></a> -->
+                                        <a href="/controllers/dashboard/vehicles/unarchiveVehicles-ctrl.php?id_vehicle=<?= $getArchived->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Désarchiver"><i class="fa-solid fa-box-open"></i></a>
                                     </td>
                                     <td class="text-end">
-                                        <!-- <a class="delete__link" data-delete="<?= $vehicle->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a> -->
+                                        <a class="delete__link" data-delete="<?= $getArchived->id_vehicle ?>" data-bs-toggle="tooltip" data-bs-title="Supprimer"><i class="fa-solid fa-trash"></i></a>
                                     </td>
                                 </tr>
                             <?php }

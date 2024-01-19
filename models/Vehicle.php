@@ -326,12 +326,13 @@ class Vehicle
     // }
 
     // ! méthode delete
-    public static function delete(int $id){
+    public static function delete(int $id)
+    {
         $pdo = Database::connect();
 
         $sql = 'DELETE FROM `vehicles`
         WHERE `id_vehicle` = :id_vehicle;';
-        
+
         $sth = $pdo->prepare($sql);
 
         $sth->bindValue(':id_vehicle', $id, PDO::PARAM_INT);
@@ -342,7 +343,8 @@ class Vehicle
     }
 
     // ! méthode archive
-    public static function archive(int $id){
+    public static function archive(int $id): bool
+    {
         $pdo = Database::connect();
 
         $sql = 'UPDATE `vehicles` 
@@ -377,6 +379,23 @@ class Vehicle
         $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
 
         $result = $sth->fetchAll(PDO::FETCH_OBJ); // récupération des résultats sous forme d'objets grâce à FETCH_OBJ (par défaut c'est du tableau indexé associatif)
+
+        return $result;
+    }
+    // ! méthode unarchive
+    public static function unarchive(int $id): bool // méthode pour lire les données
+    {
+        $pdo = Database::connect();
+
+        $sql = 'UPDATE `vehicles` 
+            SET `deleted_at` = null
+            WHERE `id_vehicle` = :id_vehicle';
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->bindValue(':id_vehicle', $id, PDO::PARAM_INT);
+
+        $result = $sth->execute();
 
         return $result;
     }

@@ -13,7 +13,7 @@ console.log(deleteLinks);
 // * fonction
 function openPopup(event) {
 
-    const confirmDelete = window.confirm('Êtes-vous sûr de vouloir supprimer cette catégorie ?'); // window est l'objet global du navigateur où se trouvent les méthodes globales comme confirm().
+    const confirmDelete = window.confirm(`Êtes-vous sûr de vouloir supprimer ce véhicule ?\nCela va le supprimer de la base de donnée et il ne sera plus jamais accessible !`); // window est l'objet global du navigateur où se trouvent les méthodes globales comme confirm().
 
     if (confirmDelete) {
         let vehicleId = event.currentTarget.getAttribute('data-delete'); // J'utilise le dataset que j'ai mis dans list.php pour récupérer le lien de redirection, sachant que du PHP ne peut pas être interprété dans du JS. currentTarget fait référence à l'élément sur lequel l'évènement est attaché (le gestionnaire d'événements). Il aurait été possible d'utiliser event.target qui fait référence à l'élément qui a déclenché l'évènement (cela peut être différent de currentTarget si l'événement a été propagé à partir d'un élément enfant).

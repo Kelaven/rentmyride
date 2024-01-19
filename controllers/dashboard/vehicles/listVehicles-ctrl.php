@@ -31,10 +31,7 @@ try {
 
 
 
-    // * afficher le msg de suppression
-    // $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);
-    // var_dump($msg);
-
+    // * afficher le msg d'archivage
     $msg = filter_var($_SESSION['msg'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
 
     if (isset($_SESSION['msg'])) {

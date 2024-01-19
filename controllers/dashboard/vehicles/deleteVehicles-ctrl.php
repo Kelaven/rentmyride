@@ -23,11 +23,13 @@ try {
         $_SESSION['msg'] = $msg;
 
 
-        header('Location: /controllers/dashboard/vehicles/listVehicles-ctrl.php');
+        header('Location: /controllers/dashboard/vehicles/archiveVehicles-ctrl.php');
         die;
     } else {
         $msg = 'La donnée n\'a pas été supprimée !';
     }
+
+
 
 } catch (\Throwable $th) {
     echo "Erreur : " . $th->getMessage();

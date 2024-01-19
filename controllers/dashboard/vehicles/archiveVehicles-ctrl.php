@@ -8,6 +8,7 @@ session_start();
 
 
 $sidebar = 'ok';
+$scriptVehiclesJS = 'scriptVehicles.js';
 
 
 
@@ -42,31 +43,19 @@ try {
     }
 
 
+    // * afficher le msg de suppression
+    // $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);
+    $msg = filter_var($_SESSION['msg'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
+
+    if (isset($_SESSION['msg'])) {
+        unset($_SESSION['msg']); // une fois que le message a été affiché, on le retire de la session pour pas qu'il reste tout le temps)
+    }
 
 
 
-    // // * pour afficher les véhicules
-
-    // $clickAscOrDesc = intval(filter_input(INPUT_GET, 'click', FILTER_SANITIZE_NUMBER_INT));
-    // // var_dump($clickAscOrDesc);
-
-    // if ($clickAscOrDesc === 2) {
-    //     $vehicles = Vehicle::getAll($clickAscOrDesc);
-    // } else {
-    //     $vehicles = Vehicle::getAll($clickAscOrDesc);
-    // }
 
 
 
-    // // * afficher le msg de suppression
-    // // $msg = filter_input(INPUT_GET, 'msg', FILTER_SANITIZE_SPECIAL_CHARS);
-    // // var_dump($msg);
-
-    // $msg = filter_var($_SESSION['msg'] ?? '', FILTER_SANITIZE_SPECIAL_CHARS);
-
-    // if (isset($_SESSION['msg'])) {
-    //     unset($_SESSION['msg']); // une fois que le message a été affiché, on le retire de la session pour pas qu'il reste tout le temps)
-    // }
 } catch (\Throwable $th) {
     echo "Erreur : " . $th->getMessage();
 }
