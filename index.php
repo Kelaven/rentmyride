@@ -1,3 +1,3 @@
 <?php
-        header('Location: /controllers/front/home-ctrl.php');
+        header('Location: /controllers/frontListVehicles-ctrl.php');
         die;

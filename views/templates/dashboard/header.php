@@ -61,7 +61,7 @@
                     <a href="#" class="sidebar__nav--tabs"><i class="fa-solid fa-road pe-2"></i>Réservations</a>
                 </li>
             </ul>
-            <a class="btn btn-primary btn__home" href="/controllers/front/home-ctrl.php">page d'accueil</a>
+            <a class="btn btn-primary btn__home" href="/controllers/frontListVehicles-ctrl.php">page d'accueil</a>
         </div>
     </section>
     <?php } ?>

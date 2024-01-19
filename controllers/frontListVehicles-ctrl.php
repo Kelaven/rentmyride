@@ -1,5 +1,5 @@
 <?php
-require_once __DIR__ . '/../../models/Vehicle.php';
+require_once __DIR__ . '/../models/Vehicle.php';
 
 $scriptJS = 'script.js';
 
@@ -25,6 +25,6 @@ if ($clickAscOrDesc === 2) {
 
 // ! views
 
-include __DIR__ . '/../../views/templates/dashboard/header.php';
-include __DIR__ . '/../../views/front/home.php';
-include __DIR__ . '/../../views/templates/dashboard/footer.php';
+include __DIR__ . '/../views/templates/dashboard/header.php';
+include __DIR__ . '/../views/frontVehicles/frontListVehicles.php';
+include __DIR__ . '/../views/templates/dashboard/footer.php';
