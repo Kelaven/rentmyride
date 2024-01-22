@@ -37,8 +37,10 @@
             <div class="col py-4">
                 <div>
                     <ul class="pagination">
-                        <li class="page-item disabled">
-                            <a class="page-link" href="#">&laquo;</a>
+                        <li class="page-item <?php if ($currentPage == 1) { ?>
+                            disabled
+                        <?php } ?>">
+                            <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $currentPage - 1 ?>">&laquo;</a>
                         </li>
                         <?php
                         for ($page=1; $page <= $nbePages ; $page++) { ?>
@@ -54,8 +56,10 @@
                         <li class="page-item">
                             <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=2">2</a>
                         </li> -->
-                        <li class="page-item">
-                            <a class="page-link" href="#">&raquo;</a>
+                        <li class="page-item <?php if ($currentPage == $nbePages) { ?>
+                            disabled
+                        <?php } ?>">
+                            <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $currentPage + 1 ?>">&raquo;</a>
                         </li>
                     </ul>
                 </div>
