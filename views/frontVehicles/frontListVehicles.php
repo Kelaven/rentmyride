@@ -13,7 +13,7 @@
         </div>
         <div class="row w-100 pt-5">
             <div class="col">
-                <p>Trier par catégories <a href="/controllers/front/home-ctrl.php?click=1" data-bs-toggle="tooltip" data-bs-title="Ordre alphabétique"><i class="fa-solid fa-caret-up px-2"></i></a><a href="/controllers/front/home-ctrl.php?click=2" data-bs-toggle="tooltip" data-bs-title="Désordre alphabétique"><i class="fa-solid fa-caret-down"></i></a></p>
+                <p>Trier par catégories <a href="/controllers/frontListVehicles-ctrl.php?click=1" data-bs-toggle="tooltip" data-bs-title="Ordre alphabétique"><i class="fa-solid fa-caret-up px-2"></i></a><a href="/controllers/frontListVehicles-ctrl.php?click=2" data-bs-toggle="tooltip" data-bs-title="Désordre alphabétique"><i class="fa-solid fa-caret-down"></i></a></p>
             </div>
         </div>
         <div class="row w-100 justify-content-center">
