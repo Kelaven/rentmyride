@@ -222,21 +222,56 @@ class Vehicle
     }
 
     // ! méthode getAll
-    public static function getAll($clickAscOrDesc): array|false // méthode pour lire les données
+    public static function getAll($clickAscOrDesc, bool $isArchived = false, bool $perPages = false): array|false // méthode pour lire les données
     {
         $pdo = Database::connect();
 
-        if ($clickAscOrDesc === 2) {
-            $sql = 'SELECT * FROM `vehicles`
-            LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-            WHERE `vehicles`.`deleted_at` IS NULL
-            ORDER BY `categories`.`name` DESC;';
+        // if ($clickAscOrDesc === 2) {
+        //     $sql = 'SELECT * FROM `vehicles`
+        //     LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+        //     WHERE `vehicles`.`deleted_at` IS NULL
+        //     ORDER BY `categories`.`name` DESC;';
+        // } else {
+        //     $sql = 'SELECT * FROM `vehicles`
+        //     LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+        //     WHERE `vehicles`.`deleted_at` IS NULL
+        //     ORDER BY `categories`.`name` ASC;';
+        // }
+
+
+        if ($isArchived == false) { // je veux pas afficher les véhicules archivés
+            $archive = 'IS NULL'; // élément de syntaxe SQL
         } else {
-            $sql = 'SELECT * FROM `vehicles`
-            LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-            WHERE `vehicles`.`deleted_at` IS NULL
-            ORDER BY `categories`.`name` ASC;';
+            $archive = 'IS NOT NULL';
         }
+
+        if ($perPages == false) {
+            if ($clickAscOrDesc === 2) { // normalement on ne met pas de variable dans la requete mais ici la variable contient un élément de syntaxe et non pas un élément d'un utilisateur donc c'est bon
+                $sql = 'SELECT * FROM `vehicles`
+                LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+                WHERE `vehicles`.`deleted_at`' . $archive . ' 
+                ORDER BY `categories`.`name` DESC;';
+            } else {
+                $sql = 'SELECT * FROM `vehicles`
+                LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+                WHERE `vehicles`.`deleted_at`' . $archive . ' 
+                ORDER BY `categories`.`name` ASC;';
+            }
+        } else { // afficher 4 véhicules par pages
+            if ($clickAscOrDesc === 2) {
+                $sql = 'SELECT * FROM `vehicles`
+                LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+                WHERE `vehicles`.`deleted_at`' . $archive . ' 
+                ORDER BY `categories`.`name` DESC LIMIT 0,8;';
+            } else {
+                $sql = 'SELECT * FROM `vehicles`
+                LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+                WHERE `vehicles`.`deleted_at`' . $archive . ' 
+                ORDER BY `categories`.`name` ASC LIMIT 0,8;';
+            }
+        }
+
+
 
         $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
 
@@ -359,29 +394,29 @@ class Vehicle
 
         return $result;
     }
-    // ! méthode get archived
-    public static function getArchived($clickAscOrDesc): array|false // méthode pour lire les données
-    {
-        $pdo = Database::connect();
+    // // ! méthode get archived
+    // public static function getArchived($clickAscOrDesc): array|false // méthode pour lire les données
+    // {
+    //     $pdo = Database::connect();
 
-        if ($clickAscOrDesc === 2) {
-            $sql = 'SELECT * FROM `vehicles`
-            LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-            WHERE `vehicles`.`deleted_at` > 0
-            ORDER BY `categories`.`name` DESC;';
-        } else {
-            $sql = 'SELECT * FROM `vehicles`
-            LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-            WHERE `vehicles`.`deleted_at` > 0
-            ORDER BY `categories`.`name` ASC;';
-        }
+    //     if ($clickAscOrDesc === 2) {
+    //         $sql = 'SELECT * FROM `vehicles`
+    //         LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+    //         WHERE `vehicles`.`deleted_at` > 0
+    //         ORDER BY `categories`.`name` DESC;';
+    //     } else {
+    //         $sql = 'SELECT * FROM `vehicles`
+    //         LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+    //         WHERE `vehicles`.`deleted_at` > 0
+    //         ORDER BY `categories`.`name` ASC;';
+    //     }
 
-        $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
+    //     $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
 
-        $result = $sth->fetchAll(PDO::FETCH_OBJ); // récupération des résultats sous forme d'objets grâce à FETCH_OBJ (par défaut c'est du tableau indexé associatif)
+    //     $result = $sth->fetchAll(PDO::FETCH_OBJ); // récupération des résultats sous forme d'objets grâce à FETCH_OBJ (par défaut c'est du tableau indexé associatif)
 
-        return $result;
-    }
+    //     return $result;
+    // }
     // ! méthode unarchive
     public static function unarchive(int $id): bool // méthode pour lire les données
     {
@@ -396,6 +431,44 @@ class Vehicle
         $sth->bindValue(':id_vehicle', $id, PDO::PARAM_INT);
 
         $result = $sth->execute();
+
+        return $result;
+    }
+
+    // ! méthode count nbe vehicles (non archivés)
+    public static function vehiclesCount(): int
+    {
+        $pdo = Database::connect();
+
+        $sql = 'SELECT `id_vehicle` 
+        FROM `vehicles` 
+        WHERE `deleted_at` IS NULL;';
+
+        $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
+
+        $result = $sth->rowCount(); // compter le nombre de véhicules et retourner un entier
+
+        return $result;
+    }
+
+    // ! méthode pour afficher les véhicules par pages (non archivés)
+    public static function displayVehicles($firstVehicle, $perPages)
+    {
+        $pdo = Database::connect();
+
+        $sql = 'SELECT * FROM `vehicles`
+        LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+        WHERE `deleted_at` IS NULL
+        LIMIT :firstVehicle, :perPages;';
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->bindValue(':firstVehicle', $firstVehicle, PDO::PARAM_INT);
+        $sth->bindValue(':perPages', $perPages, PDO::PARAM_INT);
+
+        $result = $sth->execute();
+
+        $result = $sth->fetchAll(PDO::FETCH_OBJ);
 
         return $result;
     }

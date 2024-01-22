@@ -14,6 +14,9 @@ require_once __DIR__ . '/../../../models/Vehicle.php';
 
 
 try {
+
+    // $archived = false; // de base on est dans la list de vehicles de base donc on veut pas les archivés
+
     // * modification du header
     $cssReadVehicles = 'listVehicles.css';
     $title = 'Consultation des véhicules';

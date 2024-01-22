@@ -16,6 +16,9 @@ $scriptVehiclesJS = 'scriptVehicles.js';
 
 
 try {
+
+    // $archived = true; // on veut les archivés
+
     $isArchieved = intval(filter_input(INPUT_GET, 'id_vehicle', FILTER_SANITIZE_NUMBER_INT));
 
     if ($isArchieved) {
@@ -37,9 +40,13 @@ try {
     $clickAscOrDesc = intval(filter_input(INPUT_GET, 'click', FILTER_SANITIZE_NUMBER_INT));
 
     if ($clickAscOrDesc === 2) {
-        $getArchiveds = Vehicle::getArchived($clickAscOrDesc);
+        // $getArchiveds = Vehicle::getArchived($clickAscOrDesc);
+        $getArchiveds = Vehicle::getAll($clickAscOrDesc, TRUE);
+
     } else {
-        $getArchiveds = Vehicle::getArchived($clickAscOrDesc);
+        // $getArchiveds = Vehicle::getArchived($clickAscOrDesc);
+        $getArchiveds = Vehicle::getAll($clickAscOrDesc, TRUE);
+
     }
 
 
@@ -69,4 +76,5 @@ try {
 
 include __DIR__ . '/../../../views/templates/dashboard/header.php';
 include __DIR__ . '/../../../views/dashboard/vehicles/archiveVehicles.php';
+// include __DIR__ . '/../../../views/dashboard/vehicles/listVehicles.php';
 include __DIR__ . '/../../../views/templates/dashboard/footer.php';

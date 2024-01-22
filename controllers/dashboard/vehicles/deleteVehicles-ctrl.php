@@ -12,7 +12,7 @@ try {
     $fileName = __DIR__ . '/../../../public/uploads/users/' . $vehicle->picture;
 
     if ($vehicle->picture != null) {
-        $deletePic = unlink($fileName); // supprimer l'image du disque local, dans une condition pour éviter que ça bug s'il n'y a pas de photo 
+        $deletePic = @unlink($fileName); // supprimer l'image du disque local, dans une condition pour éviter que ça bug s'il n'y a pas de photo 
     }
 
     $delete = Vehicle::delete($id_vehicle);

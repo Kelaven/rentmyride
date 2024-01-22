@@ -18,20 +18,47 @@
         </div>
         <div class="row w-100 justify-content-center">
             <?php
-            foreach ($vehicles as $vehicle) { ?>
+            foreach ($displayVehicles as $displayVehicle) { ?>
                 <div class="col-12 col-md-6 col-xl-3 d-flex justify-content-center text-center py-4">
                     <div class="card bg-light">
-                        <div class="card-header p-0"><img class="card__img" src="/public/uploads/users/<?= $vehicle->picture ?>" alt="Image d'une voiture disponible à la location"></div>
+                        <div class="card-header p-0"><img class="card__img" src="/public/uploads/users/<?= $displayVehicle->picture ?>" alt="Image d'une voiture disponible à la location"></div>
                         <div class="card-body">
-                            <h4 class="card-title pt-3"><?= $vehicle->name ?></h4>
-                            <h5 class="card-text py-3"><?= $vehicle->brand . ' ' . $vehicle->model ?></h5>
+                            <h4 class="card-title pt-3"><?= $displayVehicle->name ?></h4>
+                            <h5 class="card-text py-3"><?= $displayVehicle->brand . ' ' . $displayVehicle->model ?></h5>
                             <a href="#" class="btn btn-outline-primary">Réserver</a>
                         </div>
                     </div>
                 </div>
             <?php }
             ?>
-
+        </div>
+        <div class="row">
+            <div class="col py-4">
+                <div>
+                    <ul class="pagination">
+                        <li class="page-item disabled">
+                            <a class="page-link" href="#">&laquo;</a>
+                        </li>
+                        <?php
+                        for ($page=1; $page <= $nbePages ; $page++) { ?>
+                            <li class="page-item <?php if ($page == $currentPage) { ?> active <?php } ?>">
+                            <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $page ?>"><?= $page ?></a>
+                            </li>
+                        <?php
+                        }
+                        ?>
+                        <!-- <li class="page-item active">
+                            <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=1">1</a>
+                        </li>
+                        <li class="page-item">
+                            <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=2">2</a>
+                        </li> -->
+                        <li class="page-item">
+                            <a class="page-link" href="#">&raquo;</a>
+                        </li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 </section>
