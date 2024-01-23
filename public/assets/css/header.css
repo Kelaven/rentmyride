@@ -61,3 +61,6 @@ h5{
     height: 200px;
     object-fit: cover;
 }
+.form-select--frontListVehicles{
+    max-width: 16vw;
+}

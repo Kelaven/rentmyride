@@ -13,18 +13,34 @@
         </div>
         <div class="row w-100 pt-5">
             <div class="col">
-                <p>Filtrer par catégories</p>
-                    <!-- <a href="/controllers/frontListVehicles-ctrl.php?click=1" data-bs-toggle="tooltip" data-bs-title="Ordre alphabétique"><i class="fa-solid fa-caret-up px-2"></i></a><a href="/controllers/frontListVehicles-ctrl.php?click=2" data-bs-toggle="tooltip" data-bs-title="Désordre alphabétique"><i class="fa-solid fa-caret-down"></i></a></p> -->
             </div>
         </div>
         <div class="row w-100 justify-content-center">
+            <form method="POST">
+                <div class="form-group form-group--frontListVehicles">
+                    <label for="id_category" class="form-label">Filtrer par catégories :</label>
+                    <div class="d-flex">
+                        <select class="form-select form-select--frontListVehicles" id="id_category" name="id_category">
+                            <?= $error['id_category'] ?? '' ?>
+                            <option value="">Toutes les catégories</option>
+                            <?php
+                            foreach ($categories as $category) {
+                            ?>
+                                <option value="<?= $category->id_category ?>" <?php if ($category->id_category == $id_category && !empty($id_category)) { ?> selected <?php } ?>> <?= ucfirst($category->name) ?> </option>
+                            <?php }
+                            ?>
+                        </select>
+                        <button type="submit" class="btn btn-dark">Filtrer</button>
+                    </div>
+                </div>
+            </form>
             <?php
             foreach ($displayVehicles as $displayVehicle) { ?>
                 <div class="col-12 col-md-6 col-xl-3 d-flex justify-content-center text-center py-4">
                     <div class="card bg-light">
                         <div class="card-header p-0"><img class="card__img" src="/public/uploads/users/<?= $displayVehicle->picture ?>" alt="Image d'une voiture disponible à la location"></div>
                         <div class="card-body">
-                            <h4 class="card-title pt-3"><?= $displayVehicle->name ?></h4>
+                            <h4 class="card-title pt-3"><?= $displayVehicle->name ?? '' ?></h4>
                             <h5 class="card-text py-3"><?= $displayVehicle->brand . ' ' . $displayVehicle->model ?></h5>
                             <a href="#" class="btn btn-outline-primary">Réserver</a>
                         </div>
@@ -43,9 +59,9 @@
                             <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $currentPage - 1 ?>">&laquo;</a>
                         </li>
                         <?php
-                        for ($page=1; $page <= $nbePages ; $page++) { ?>
+                        for ($page = 1; $page <= $nbePages; $page++) { ?>
                             <li class="page-item <?php if ($page == $currentPage) { ?> active <?php } ?>">
-                            <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $page ?>"><?= $page ?></a>
+                                <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $page ?>"><?= $page ?></a>
                             </li>
                         <?php
                         }

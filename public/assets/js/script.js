@@ -30,3 +30,15 @@ deleteLinks.forEach(deleteLink => {
     deleteLink.addEventListener('click', openPopup);
 });
 
+
+// ? filtrer par catégories dans la vue front :
+
+// const select = document.querySelector('select');
+// console.log(select);
+
+// select.addEventListener('change', (event) => {
+//     const chosenOption = select.option.currentTarget;
+//     console.log(chosenOption);
+// })
+
+

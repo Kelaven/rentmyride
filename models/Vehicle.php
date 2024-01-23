@@ -222,7 +222,7 @@ class Vehicle
     }
 
     // ! méthode getAll
-    public static function getAll($clickAscOrDesc, bool $isArchived = false, bool $perPages = false): array|false // méthode pour lire les données
+    public static function getAll($clickAscOrDesc = 1, bool $isArchived = false, bool $perPages = false): array|false // méthode pour lire les données
     {
         $pdo = Database::connect();
 
@@ -258,17 +258,10 @@ class Vehicle
                 ORDER BY `categories`.`name` ASC;';
             }
         } else { // afficher 4 véhicules par pages
-            if ($clickAscOrDesc === 2) {
-                $sql = 'SELECT * FROM `vehicles`
-                LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-                WHERE `vehicles`.`deleted_at`' . $archive . ' 
-                ORDER BY `categories`.`name` DESC LIMIT 0,8;';
-            } else {
-                $sql = 'SELECT * FROM `vehicles`
+            $sql = 'SELECT * FROM `vehicles`
                 LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
                 WHERE `vehicles`.`deleted_at`' . $archive . ' 
                 ORDER BY `categories`.`name` ASC LIMIT 0,8;';
-            }
         }
 
 
@@ -457,7 +450,7 @@ class Vehicle
         $pdo = Database::connect();
 
         $sql = 'SELECT * FROM `vehicles`
-        LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+        JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
         WHERE `deleted_at` IS NULL
         LIMIT :firstVehicle, :perPages;';
 
@@ -465,6 +458,30 @@ class Vehicle
 
         $sth->bindValue(':firstVehicle', $firstVehicle, PDO::PARAM_INT);
         $sth->bindValue(':perPages', $perPages, PDO::PARAM_INT);
+
+        $result = $sth->execute();
+
+        $result = $sth->fetchAll(PDO::FETCH_OBJ);
+
+        return $result;
+    }
+
+    // ! méthode pour filtrer les véhicules par catégories (non archivés)
+    public static function filterVehicles($id_category)
+    {
+        $pdo = Database::connect();
+
+        // $sql = 'SELECT * FROM `vehicles` 
+        // JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+        // WHERE `id_category` = :id_category AND `deleted_at` IS NULL;';
+
+        $sql = 'SELECT * FROM `vehicles` 
+        JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+        WHERE `categories`.`id_category` = :id_category AND `vehicles`.`deleted_at` IS NULL;';
+
+        $sth = $pdo->prepare($sql);
+
+        $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT);
 
         $result = $sth->execute();
 

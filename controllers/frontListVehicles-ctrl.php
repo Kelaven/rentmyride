@@ -1,23 +1,23 @@
 <?php
 require_once __DIR__ . '/../models/Vehicle.php';
+require_once __DIR__ . '/../models/Category.php';
 
 
+$categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML) => afficher la liste dans la vue
 
+
+// var_dump($categories);
+// die;
+$title = 'Consulter les véhicules disponibles';
 $scriptJS = 'script.js';
 
 
 
 try {
 
-    // ! pr afficher l'ordre croissant ou décroissant
-    $clickAscOrDesc = intval(filter_input(INPUT_GET, 'click', FILTER_SANITIZE_NUMBER_INT));
-    // var_dump($clickAscOrDesc);
+    // ! pr afficher les véhicules
+    $vehicles = Vehicle::getAll(1, false, true);
 
-    if ($clickAscOrDesc === 2) {
-        $vehicles = Vehicle::getAll($clickAscOrDesc, false, true);
-    } else {
-        $vehicles = Vehicle::getAll($clickAscOrDesc, false, true);
-    }
 
 
 
@@ -43,6 +43,34 @@ try {
     $displayVehicles = Vehicle::displayVehicles($firstVehicle, $perPages);
     // var_dump($displayVehicles);
     // die;
+
+
+    // ! filtrer
+    $id_category = null;
+    if ($_SERVER["REQUEST_METHOD"] == "POST") {
+        $error = [];
+        // id_category
+        $id_category = intval(filter_input(INPUT_POST, 'id_category', FILTER_SANITIZE_NUMBER_INT));
+        if (empty($id_category)) {
+            $error['id_category'] = 'Le champ ne peut pas être vide.';
+        } else {
+            $categoriesId = array_column($categories, 'id_category'); // création d'un tableau contenant les ID pour vérifier qu'un ID entré par un utilisateur corresponde bien à l'un des ID qui existent dans notre BDD
+
+            $isOk = in_array($id_category, $categoriesId); // réponds true si l'id correspond bien à l'un de nos ID existant dans la BDD => pas besoin de filtre de validation
+            // var_dump($id_category);
+            // die;
+            if (!$isOk) {
+                $error['id_category'] = 'Erreur, le choix est invalide.';
+            }
+        }
+    }
+
+
+
+    $filterVehicles = Vehicle::filterVehicles($id_category);
+    if (!empty($filterVehicles)) {
+        $displayVehicles = $filterVehicles;
+    }
 
 
 } catch (\Throwable $th) {
