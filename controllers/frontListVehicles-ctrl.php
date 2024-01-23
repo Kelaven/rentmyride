@@ -1,7 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/Vehicle.php';
 require_once __DIR__ . '/../models/Category.php';
-
+require_once __DIR__ . '/../config/init.php';
 
 $categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML) => afficher la liste dans la vue
 
@@ -30,17 +30,27 @@ try {
         $currentPage = 1;
     }
 
-    // déterminer le nombre de pages nécessaires pour avoir 8 véhicules par page
-    $perPages = 8;
 
     $nbeVehicles = Vehicle::vehiclesCount();
+    // déterminer le nombre de pages nécessaires pour avoir 8 véhicules par page
+    // $perPages = 8; // NB_ELEMENTS_PER_PAGE, constant pour pouvoir la modifier facilement si besoin
+    $nbePages = ceil($nbeVehicles / NB_ELEMENTS_PER_PAGE); // arrondit au nombre supérieur
 
-    $nbePages = ceil($nbeVehicles / $perPages); // arrondit au nombre supérieur
+
+
+
+    if (isset($page) && ($page<0)) { // gérer l'erreur si l'utilisateur rentre un nombre de page négatif dans l'url
+        $currentPage = 1;
+    }
+    if (isset($page) && ($page>$nbePages)) { // gérer l'erreur si l'utilisateur rentre un nombre de pages trop grand dans l'url
+        $currentPage = $nbePages;
+    }
+
 
     // calcul du premier véhicule de la page
-    $firstVehicle = ($currentPage * $perPages) - $perPages; // le premier véhicule fait 0
+    $firstVehicle = ($currentPage * NB_ELEMENTS_PER_PAGE) - NB_ELEMENTS_PER_PAGE; // le premier véhicule fait 0
 
-    $displayVehicles = Vehicle::displayVehicles($firstVehicle, $perPages);
+    $displayVehicles = Vehicle::displayVehicles($firstVehicle, NB_ELEMENTS_PER_PAGE);
     // var_dump($displayVehicles);
     // die;
 

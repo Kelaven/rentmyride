@@ -16,3 +16,8 @@ define('MAX_FILESIZE', 2*1024*1024); // taille d'image max
 define('DSN', 'mysql:dbname=rentmyride;host=localhost');
 define('USER', 'rentmyride_admin');
 define('PASSWORD', '2t9#csRh$%uQ^wWPaFTb');
+
+
+// ! nbe de véhicules à afficher par pages
+
+define('NB_ELEMENTS_PER_PAGE', 8);

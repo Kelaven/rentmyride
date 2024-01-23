@@ -38,7 +38,13 @@
             foreach ($displayVehicles as $displayVehicle) { ?>
                 <div class="col-12 col-md-6 col-xl-3 d-flex justify-content-center text-center py-4">
                     <div class="card bg-light">
-                        <div class="card-header p-0"><img class="card__img" src="/public/uploads/users/<?= $displayVehicle->picture ?>" alt="Image d'une voiture disponible à la location"></div>
+                        <div class="card-header p-0">
+                            <?php if ($displayVehicle->picture) { ?>
+                                <img class="card__img" src="/public/uploads/users/<?= $displayVehicle->picture ?>" alt="<?= $displayVehicle->brand ?> <? $displayVehicle->model ?>">
+                            <?php } else { ?>
+                                <img class="card__img" src="/public/assets/img/anonym-car-illustration.jpeg" alt="Illustration d'une voiture">
+                            <?php } ?>
+                        </div>
                         <div class="card-body">
                             <h4 class="card-title pt-3"><?= $displayVehicle->name ?? '' ?></h4>
                             <h5 class="card-text py-3"><?= $displayVehicle->brand . ' ' . $displayVehicle->model ?></h5>

@@ -226,19 +226,6 @@ class Vehicle
     {
         $pdo = Database::connect();
 
-        // if ($clickAscOrDesc === 2) {
-        //     $sql = 'SELECT * FROM `vehicles`
-        //     LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-        //     WHERE `vehicles`.`deleted_at` IS NULL
-        //     ORDER BY `categories`.`name` DESC;';
-        // } else {
-        //     $sql = 'SELECT * FROM `vehicles`
-        //     LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-        //     WHERE `vehicles`.`deleted_at` IS NULL
-        //     ORDER BY `categories`.`name` ASC;';
-        // }
-
-
         if ($isArchived == false) { // je veux pas afficher les véhicules archivés
             $archive = 'IS NULL'; // élément de syntaxe SQL
         } else {
@@ -261,7 +248,7 @@ class Vehicle
             $sql = 'SELECT * FROM `vehicles`
                 LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
                 WHERE `vehicles`.`deleted_at`' . $archive . ' 
-                ORDER BY `categories`.`name` ASC LIMIT 0,8;';
+                ORDER BY `categories`.`name` ASC LIMIT 0,' . NB_ELEMENTS_PER_PAGE . ';';
         }
 
 
@@ -433,13 +420,20 @@ class Vehicle
     {
         $pdo = Database::connect();
 
-        $sql = 'SELECT `id_vehicle` 
-        FROM `vehicles` 
+        // $sql = 'SELECT `id_vehicle` 
+        // FROM `vehicles` 
+        // WHERE `deleted_at` IS NULL;'; // requete qui était utilisée pour rowCount() mais comme on ne doit pas utiliser cette méthode avec SELECT, je dois utiliser la requete ci-dessous :
+
+        $sql = 'SELECT COUNT(*) FROM `vehicles`
+        JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
         WHERE `deleted_at` IS NULL;';
+
 
         $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
 
-        $result = $sth->rowCount(); // compter le nombre de véhicules et retourner un entier
+        // $result = $sth->rowCount(); // compter le nombre de véhicules et retourner un entier
+
+        $result = $sth->fetchColumn(); // rowCount ne s'utilise pas sur du SELECT donc on utilise fetchColumn()
 
         return $result;
     }
