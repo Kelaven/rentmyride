@@ -39,14 +39,17 @@ try {
     // * afficher les véhicules archivés
     $clickAscOrDesc = intval(filter_input(INPUT_GET, 'click', FILTER_SANITIZE_NUMBER_INT));
 
-    if ($clickAscOrDesc === 2) {
-        // $getArchiveds = Vehicle::getArchived($clickAscOrDesc);
-        $getArchiveds = Vehicle::getAll($clickAscOrDesc, TRUE);
-
+    // if ($clickAscOrDesc === 2) {
+    //     // $getArchiveds = Vehicle::getArchived($clickAscOrDesc);
+    //     $getArchiveds = Vehicle::getAll($clickAscOrDesc, TRUE);
+    // } else {
+    //     // $getArchiveds = Vehicle::getArchived($clickAscOrDesc);
+    //     $getArchiveds = Vehicle::getAll($clickAscOrDesc, TRUE);
+    // }
+    if ($clickAscOrDesc === 2) { // si je veux afficher, dans l'ordre décroissant, les véhicules archivés
+        $getArchiveds = Vehicle::getAll2(clickAscOrDesc: $clickAscOrDesc, isArchived: true);
     } else {
-        // $getArchiveds = Vehicle::getArchived($clickAscOrDesc);
-        $getArchiveds = Vehicle::getAll($clickAscOrDesc, TRUE);
-
+        $getArchiveds = Vehicle::getAll2(clickAscOrDesc: $clickAscOrDesc, isArchived: true);
     }
 
 

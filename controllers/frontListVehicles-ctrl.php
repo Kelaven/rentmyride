@@ -1,6 +1,7 @@
 <?php
 require_once __DIR__ . '/../models/Vehicle.php';
 require_once __DIR__ . '/../models/Category.php';
+require_once __DIR__ . '/../helpers/dd.php';
 require_once __DIR__ . '/../config/init.php';
 
 $categories = Category::getAll(); // je récupère la liste des catégories existante (voir boucle dans le HTML) => afficher la liste dans la vue
@@ -16,7 +17,10 @@ $scriptJS = 'script.js';
 try {
 
     // ! pr afficher les véhicules
-    $vehicles = Vehicle::getAll(1, false, true);
+    // $vehicles = Vehicle::getAll(1, false, true);
+    // $vehicles = Vehicle::getAll2(); // j'affiche les véhicules en les paginant 
+    // dd($vehicles);
+
 
 
 
@@ -47,10 +51,13 @@ try {
     }
 
 
-    // calcul du premier véhicule de la page
+    // calcul du premier véhicule de la page perPages: true
     $firstVehicle = ($currentPage * NB_ELEMENTS_PER_PAGE) - NB_ELEMENTS_PER_PAGE; // le premier véhicule fait 0
 
-    $displayVehicles = Vehicle::displayVehicles($firstVehicle, NB_ELEMENTS_PER_PAGE);
+    // $displayVehicles = Vehicle::displayVehicles($firstVehicle, NB_ELEMENTS_PER_PAGE); // pour l'instant l'utilisateur n'a pas encore choisit le filtre donc je ne précise pas le troisième argument
+    
+    $vehicles = Vehicle::getAll2(firstVehicle: $firstVehicle, perPages: true);
+    
     // var_dump($displayVehicles);
     // die;
 
@@ -76,11 +83,8 @@ try {
     }
 
 
-
-    $filterVehicles = Vehicle::filterVehicles($id_category);
-    if (!empty($filterVehicles)) {
-        $displayVehicles = $filterVehicles;
-    }
+    $displayVehicles = Vehicle::displayVehicles($firstVehicle, NB_ELEMENTS_PER_PAGE, $id_category); // pour filtrer si l'utiliser en a choisit un donc en récupérant l'id du filtre choisit 
+    // $vehicles = Vehicle::getAll2(firstVehicle: $firstVehicle, perPages: true, )
 
 
 } catch (\Throwable $th) {

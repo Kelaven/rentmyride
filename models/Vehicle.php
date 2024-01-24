@@ -244,21 +244,99 @@ class Vehicle
                 WHERE `vehicles`.`deleted_at`' . $archive . ' 
                 ORDER BY `categories`.`name` ASC;';
             }
-        } else { // afficher 4 véhicules par pages
+        } else { // afficher 8 véhicules par pages
             $sql = 'SELECT * FROM `vehicles`
                 LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
                 WHERE `vehicles`.`deleted_at`' . $archive . ' 
                 ORDER BY `categories`.`name` ASC LIMIT 0,' . NB_ELEMENTS_PER_PAGE . ';';
         }
-
-
-
         $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
 
         $result = $sth->fetchAll(PDO::FETCH_OBJ); // récupération des résultats sous forme d'objets grâce à FETCH_OBJ (par défaut c'est du tableau indexé associatif)
 
         return $result;
     }
+
+    /**
+     * $clickAscOrDesc = 1 signifie que l'ordre d'affichage des catégories doit être croissant (2 pour décroissant).
+     * $isArchived = false signifie que l'on ne veut pas afficher les véhicules archivés. 
+     * $perPages = false signifie que l'on veut afficher tous les véhicules sur la même page.
+     * $firstVehicle est utilisé pour paginer la liste des véhicules : 0 place le premier véhicule sur la première page.
+     * @param int $clickAscOrDesc
+     * 
+     * @return [type]
+     */
+    public static function getAll2(bool $isArchived = false, int $clickAscOrDesc = 1, bool $perPages = false, int $firstVehicle = 0): array|false
+    {
+        $pdo = Database::connect();
+
+        $sql = 'SELECT * FROM `vehicles` -- requête de base : afficher tous les véhicules et leur catégorie
+        JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`';
+        $sql = $sql . 'WHERE 1 = 1';
+
+        if ($isArchived === false) { // si on ne veut pas afficher les véhicules archivés
+            $sql = $sql . ' AND `vehicles`.`deleted_at` IS NULL';
+        } else {
+            $sql = $sql . ' AND `vehicles`.`deleted_at` IS NOT NULL';
+        }
+
+        if ($clickAscOrDesc === 2 && $perPages === false) { // si on veut afficher les véhicules par catégories dans leur ordre décroissant (&& fait en sorte que ça fonctionne que lorsque l'on a pas besoin de paginer donc dans le dashboard et pas la vue)
+            $sql = $sql . ' ORDER BY `categories`.`name` DESC';
+        } elseif ($clickAscOrDesc !== 2 && $perPages === false) {
+            $sql = $sql . ' ORDER BY `categories`.`name` ASC';
+        }
+
+        if ($perPages === true) { // si on veut afficher X véhicules par pages et non pas tous les véhicules sur une seule page (dans ce cas plus besoin de trier les catégories dans l'ordre décroissant car on va plutôt utiliser les filtres)
+            $sql = $sql . ' ORDER BY `categories`.`name` LIMIT :firstVehicle,' . NB_ELEMENTS_PER_PAGE;
+        }
+
+
+        $sth = $pdo->prepare($sql);
+
+        if ($perPages === true) {
+        $sth->bindValue(':firstVehicle', $firstVehicle, PDO::PARAM_INT);
+        }
+
+        $result = $sth->execute();
+
+        $result = $sth->fetchAll(PDO::FETCH_OBJ); // récupération des résultats sous forme d'objets grâce à FETCH_OBJ (par défaut c'est du tableau indexé associatif)
+
+        return $result;
+    }
+
+        // ! méthode pour afficher les véhicules par pages (non archivés) + pouvoir trier si besoin
+        public static function displayVehicles($firstVehicle, $perPages, $id_category = null)
+        {
+            $pdo = Database::connect();
+    
+            if ($id_category == null) { // si l'utilisateur n'a pas choisi de filtre
+                $sql = 'SELECT * FROM `vehicles`
+                JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+                WHERE `deleted_at` IS NULL
+                ORDER BY `categories`.`name` ASC
+                LIMIT :firstVehicle,' . NB_ELEMENTS_PER_PAGE . ';';
+            } else {
+                $sql = 'SELECT * FROM `vehicles`
+                JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+                WHERE `categories`.`id_category` = :id_category AND `vehicles`.`deleted_at` IS NULL
+                ORDER BY `categories`.`name` ASC
+                LIMIT :firstVehicle,' . NB_ELEMENTS_PER_PAGE . ';';
+            }
+    
+            $sth = $pdo->prepare($sql);
+    
+            $sth->bindValue(':firstVehicle', $firstVehicle, PDO::PARAM_INT);
+            if ($id_category !== null) { // si l'utilisateur a choisi un filtre je dois filtrer selon l'id choisi
+                $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT);
+            }
+    
+            $result = $sth->execute();
+    
+            $result = $sth->fetchAll(PDO::FETCH_OBJ);
+    
+            return $result;
+        }
+    
 
     // ! méthode update
     public function update() // méthode pour modifier les données
@@ -374,29 +452,7 @@ class Vehicle
 
         return $result;
     }
-    // // ! méthode get archived
-    // public static function getArchived($clickAscOrDesc): array|false // méthode pour lire les données
-    // {
-    //     $pdo = Database::connect();
 
-    //     if ($clickAscOrDesc === 2) {
-    //         $sql = 'SELECT * FROM `vehicles`
-    //         LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-    //         WHERE `vehicles`.`deleted_at` > 0
-    //         ORDER BY `categories`.`name` DESC;';
-    //     } else {
-    //         $sql = 'SELECT * FROM `vehicles`
-    //         LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-    //         WHERE `vehicles`.`deleted_at` > 0
-    //         ORDER BY `categories`.`name` ASC;';
-    //     }
-
-    //     $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
-
-    //     $result = $sth->fetchAll(PDO::FETCH_OBJ); // récupération des résultats sous forme d'objets grâce à FETCH_OBJ (par défaut c'est du tableau indexé associatif)
-
-    //     return $result;
-    // }
     // ! méthode unarchive
     public static function unarchive(int $id): bool // méthode pour lire les données
     {
@@ -438,76 +494,5 @@ class Vehicle
         return $result;
     }
 
-    // ! méthode pour afficher les véhicules par pages (non archivés)
-    public static function displayVehicles($firstVehicle, $perPages)
-    {
-        $pdo = Database::connect();
 
-        $sql = 'SELECT * FROM `vehicles`
-        JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-        WHERE `deleted_at` IS NULL
-        LIMIT :firstVehicle, :perPages;';
-
-        $sth = $pdo->prepare($sql);
-
-        $sth->bindValue(':firstVehicle', $firstVehicle, PDO::PARAM_INT);
-        $sth->bindValue(':perPages', $perPages, PDO::PARAM_INT);
-
-        $result = $sth->execute();
-
-        $result = $sth->fetchAll(PDO::FETCH_OBJ);
-
-        return $result;
-    }
-
-    // ! méthode pour filtrer les véhicules par catégories (non archivés)
-    public static function filterVehicles($id_category)
-    {
-        $pdo = Database::connect();
-
-        // $sql = 'SELECT * FROM `vehicles` 
-        // JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-        // WHERE `id_category` = :id_category AND `deleted_at` IS NULL;';
-
-        $sql = 'SELECT * FROM `vehicles` 
-        JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-        WHERE `categories`.`id_category` = :id_category AND `vehicles`.`deleted_at` IS NULL;';
-
-        $sth = $pdo->prepare($sql);
-
-        $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT);
-
-        $result = $sth->execute();
-
-        $result = $sth->fetchAll(PDO::FETCH_OBJ);
-
-        return $result;
-    }
 }
-
-
-
-// SELECT `brand`, COUNT(`id_vehicle`) AS "Nombre de véhicules"
-// FROM `vehicles`
-// GROUP BY `brand`;
-
-
-// SELECT `categories`.`name`, COUNT(`vehicles`.`id_vehicle`) AS "Nombre de vehicules"
-// FROM `categories`
-// LEFT JOIN `vehicles` ON `categories`.`id_category` = `vehicles`.`id_category`
-// GROUP BY `categories`.`name`;
-
-
-// SELECT `categories`.`name`, COUNT(`vehicles`.`id_vehicle`) AS "nbveh" 
-// FROM `categories` 
-// JOIN `vehicles` ON `categories`.`id_category` = `vehicles`.`id_category` 
-// GROUP BY `categories`.`name`
-// HAVING `nbveh` > 2;
-
-
-// SELECT `categories`.`name`, COUNT(`vehicles`.`id_vehicle`) AS "nbveh" 
-// FROM `categories` 
-// JOIN `vehicles` ON `categories`.`id_category` = `vehicles`.`id_category` 
-// WHERE `categories`.`name` LIKE 'b%'
-// GROUP BY `categories`.`name` 
-// HAVING `nbveh` > 2;
