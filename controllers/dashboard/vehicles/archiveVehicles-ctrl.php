@@ -47,9 +47,9 @@ try {
     //     $getArchiveds = Vehicle::getAll($clickAscOrDesc, TRUE);
     // }
     if ($clickAscOrDesc === 2) { // si je veux afficher, dans l'ordre décroissant, les véhicules archivés
-        $getArchiveds = Vehicle::getAll2(clickAscOrDesc: $clickAscOrDesc, isArchived: true);
+        $getArchiveds = Vehicle::getAll(clickAscOrDesc: $clickAscOrDesc, isArchived: true);
     } else {
-        $getArchiveds = Vehicle::getAll2(clickAscOrDesc: $clickAscOrDesc, isArchived: true);
+        $getArchiveds = Vehicle::getAll(clickAscOrDesc: $clickAscOrDesc, isArchived: true);
     }
 
 

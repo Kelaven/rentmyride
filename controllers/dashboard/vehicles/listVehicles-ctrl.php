@@ -32,9 +32,9 @@ try {
     // }
 
     if ($clickAscOrDesc === 2) { // si on veut afficher dans l'ordre décroissant
-        $vehicles = Vehicle::getAll2(clickAscOrDesc: $clickAscOrDesc);
+        $vehicles = Vehicle::getAll(clickAscOrDesc: $clickAscOrDesc);
     } else {
-        $vehicles = Vehicle::getAll2();
+        $vehicles = Vehicle::getAll();
         // dd($vehicles);
     }
 

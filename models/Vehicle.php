@@ -19,7 +19,6 @@ class Vehicle
     private ?string $updated_at;
     private ?string $deleted_at;
     private ?int $id_category;
-    // private object|false $category;
 
 
     // ! méthode magique
@@ -45,7 +44,6 @@ class Vehicle
         $this->updated_at = $updated_at;
         $this->deleted_at = $deleted_at;
         $this->id_category = $id_category;
-        // $this->category = Category::get($id_category);
     }
 
 
@@ -142,21 +140,11 @@ class Vehicle
     public function setIdCategory(?int $id_category)
     {
         $this->id_category = $id_category;
-        // $this->category = Category::get($id_category);
     }
     public function getIdCategory(): ?int
     {
         return $this->id_category;
     }
-    // ? setter et getter getCategory : 
-    // public function setCategory(int $id_category)
-    // {
-    //     $this->category = Category::get($id_category);
-    // }
-    // public function getCategory(): object
-    // {
-    //     return $this->category;
-    // }
 
 
 
@@ -222,51 +210,19 @@ class Vehicle
     }
 
     // ! méthode getAll
-    public static function getAll($clickAscOrDesc = 1, bool $isArchived = false, bool $perPages = false): array|false // méthode pour lire les données
-    {
-        $pdo = Database::connect();
-
-        if ($isArchived == false) { // je veux pas afficher les véhicules archivés
-            $archive = 'IS NULL'; // élément de syntaxe SQL
-        } else {
-            $archive = 'IS NOT NULL';
-        }
-
-        if ($perPages == false) {
-            if ($clickAscOrDesc === 2) { // normalement on ne met pas de variable dans la requete mais ici la variable contient un élément de syntaxe et non pas un élément d'un utilisateur donc c'est bon
-                $sql = 'SELECT * FROM `vehicles`
-                LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-                WHERE `vehicles`.`deleted_at`' . $archive . ' 
-                ORDER BY `categories`.`name` DESC;';
-            } else {
-                $sql = 'SELECT * FROM `vehicles`
-                LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-                WHERE `vehicles`.`deleted_at`' . $archive . ' 
-                ORDER BY `categories`.`name` ASC;';
-            }
-        } else { // afficher 8 véhicules par pages
-            $sql = 'SELECT * FROM `vehicles`
-                LEFT JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-                WHERE `vehicles`.`deleted_at`' . $archive . ' 
-                ORDER BY `categories`.`name` ASC LIMIT 0,' . NB_ELEMENTS_PER_PAGE . ';';
-        }
-        $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
-
-        $result = $sth->fetchAll(PDO::FETCH_OBJ); // récupération des résultats sous forme d'objets grâce à FETCH_OBJ (par défaut c'est du tableau indexé associatif)
-
-        return $result;
-    }
 
     /**
      * $clickAscOrDesc = 1 signifie que l'ordre d'affichage des catégories doit être croissant (2 pour décroissant).
      * $isArchived = false signifie que l'on ne veut pas afficher les véhicules archivés. 
      * $perPages = false signifie que l'on veut afficher tous les véhicules sur la même page.
      * $firstVehicle est utilisé pour paginer la liste des véhicules : 0 place le premier véhicule sur la première page.
+     * $id_category = null signifie que l'utilisateur n'a pas choisi d'afficher les résultats selon une catégorie en particulier, on doit donc afficher tous les véhicules sans filtre
+     * 
      * @param int $clickAscOrDesc
      * 
      * @return [type]
      */
-    public static function getAll2(bool $isArchived = false, int $clickAscOrDesc = 1, bool $perPages = false, int $firstVehicle = 0): array|false
+    public static function getAll(bool $isArchived = false, int $clickAscOrDesc = 1, bool $perPages = false, int $firstVehicle = 0, null|int $id_category = null): array|false
     {
         $pdo = Database::connect();
 
@@ -278,6 +234,10 @@ class Vehicle
             $sql = $sql . ' AND `vehicles`.`deleted_at` IS NULL';
         } else {
             $sql = $sql . ' AND `vehicles`.`deleted_at` IS NOT NULL';
+        }
+
+        if (!empty($id_category)) { // si l'utilisateur choisi un filtre, c'est à dire afficher une catégorie en particulier
+            $sql = $sql . ' AND `categories`.`id_category` = :id_category';
         }
 
         if ($clickAscOrDesc === 2 && $perPages === false) { // si on veut afficher les véhicules par catégories dans leur ordre décroissant (&& fait en sorte que ça fonctionne uniqument lorsque l'on a pas besoin de paginer donc dans le dashboard et pas la vue)
@@ -293,8 +253,11 @@ class Vehicle
 
         $sth = $pdo->prepare($sql);
 
+        if (!empty($id_category)) {
+            $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT);
+        }
         if ($perPages === true) {
-        $sth->bindValue(':firstVehicle', $firstVehicle, PDO::PARAM_INT);
+            $sth->bindValue(':firstVehicle', $firstVehicle, PDO::PARAM_INT);
         }
 
         $result = $sth->execute();
@@ -304,39 +267,6 @@ class Vehicle
         return $result;
     }
 
-        // ! méthode pour afficher les véhicules par pages (non archivés) + pouvoir trier si besoin
-        public static function displayVehicles($firstVehicle, $perPages, $id_category = null)
-        {
-            $pdo = Database::connect();
-    
-            if ($id_category == null) { // si l'utilisateur n'a pas choisi de filtre
-                $sql = 'SELECT * FROM `vehicles`
-                JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-                WHERE `deleted_at` IS NULL
-                ORDER BY `categories`.`name` ASC
-                LIMIT :firstVehicle,' . NB_ELEMENTS_PER_PAGE . ';';
-            } else {
-                $sql = 'SELECT * FROM `vehicles`
-                JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-                WHERE `categories`.`id_category` = :id_category AND `vehicles`.`deleted_at` IS NULL
-                ORDER BY `categories`.`name` ASC
-                LIMIT :firstVehicle,' . NB_ELEMENTS_PER_PAGE . ';';
-            }
-    
-            $sth = $pdo->prepare($sql);
-    
-            $sth->bindValue(':firstVehicle', $firstVehicle, PDO::PARAM_INT);
-            if ($id_category !== null) { // si l'utilisateur a choisi un filtre je dois filtrer selon l'id choisi
-                $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT);
-            }
-    
-            $result = $sth->execute();
-    
-            $result = $sth->fetchAll(PDO::FETCH_OBJ);
-    
-            return $result;
-        }
-    
 
     // ! méthode update
     public function update() // méthode pour modifier les données
@@ -393,30 +323,6 @@ class Vehicle
         return $result;
     }
 
-    // // ! méthode getPictureUpdate
-    // /**
-    //  * méthode pour récupérer les informations de la catégorie séléctionnée pour la modifier (update)
-    //  * @param int $id
-    //  * 
-    //  * @return object
-    //  */
-    // public static function getPictureUpdate(?int $id): object|false // méthode pour update, afin de récupérer les infos de la picture existante en BDD
-    // {
-    //     $pdo = Database::connect();
-
-    //     $sql = 'SELECT `picture` FROM `vehicles`
-    //     WHERE id_vehicle = :id_vehicle;';
-
-    //     $sth = $pdo->prepare($sql);
-
-    //     $sth->bindValue(':id_vehicle', $id, PDO::PARAM_INT); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier
-
-    //     $result = $sth->execute();
-
-    //     $result = $sth->fetch(PDO::FETCH_OBJ); // pour récupérer les données de l'objet portant l'id. Le fetch recupère la première info uniquement (contrairement au fetchAll qui récupère tout)
-
-    //     return $result;
-    // }
 
     // ! méthode delete
     public static function delete(int $id)
@@ -472,7 +378,7 @@ class Vehicle
     }
 
     // ! méthode count nbe vehicles (non archivés)
-    public static function vehiclesCount(): int
+    public static function vehiclesCount(bool|int $id_category = false): int // si $id_category est false alors l'utilisateur ne filtre pas les résultats donc il faut compter les véhicules de toutes les catégories
     {
         $pdo = Database::connect();
 
@@ -480,12 +386,24 @@ class Vehicle
         // FROM `vehicles` 
         // WHERE `deleted_at` IS NULL;'; // requete qui était utilisée pour rowCount() mais comme on ne doit pas utiliser cette méthode avec SELECT, je dois utiliser la requete ci-dessous :
 
-        $sql = 'SELECT COUNT(*) FROM `vehicles`
-        JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-        WHERE `deleted_at` IS NULL;';
+        if ($id_category === false) {
+            $sql = 'SELECT COUNT(*) FROM `vehicles`
+            JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+            WHERE `deleted_at` IS NULL;';
+        } else { // si l'utilisateur sélectionne un filtre il faut compter les véhicules du filtre en question uniquement
+            $sql = 'SELECT COUNT(*) FROM `vehicles`
+            JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
+            WHERE `deleted_at` IS NULL AND `categories`.`id_category` = :id_category;';
+        }
 
+        $sth = $pdo->prepare($sql);
 
-        $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
+        if ($id_category) {
+            $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier
+        }
+        $result = $sth->execute();
+
+        // $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
 
         // $result = $sth->rowCount(); // compter le nombre de véhicules et retourner un entier
 
@@ -493,6 +411,4 @@ class Vehicle
 
         return $result;
     }
-
-
 }

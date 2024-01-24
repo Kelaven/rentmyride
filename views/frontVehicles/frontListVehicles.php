@@ -16,13 +16,13 @@
             </div>
         </div>
         <div class="row w-100 justify-content-center">
-            <form method="POST">
+            <form method="GET">
                 <div class="form-group form-group--frontListVehicles">
                     <label for="id_category" class="form-label">Filtrer par catégories :</label>
                     <div class="d-flex">
                         <select class="form-select form-select--frontListVehicles" id="id_category" name="id_category">
                             <?= $error['id_category'] ?? '' ?>
-                            <option value="">Toutes les catégories</option>
+                            <option value="" selected disabled>Toutes les catégories</option>
                             <?php
                             foreach ($categories as $category) {
                             ?>
@@ -32,6 +32,7 @@
                         </select>
                         <button type="submit" class="btn btn-dark">Filtrer</button>
                     </div>
+                    <small><a href="/controllers/frontListVehicles-ctrl.php">Afficher toutes les catégories</a></small>
                 </div>
             </form>
             <?php
@@ -62,12 +63,12 @@
                         <li class="page-item <?php if ($currentPage == 1) { ?>
                             disabled
                         <?php } ?>">
-                            <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $currentPage - 1 ?>">&laquo;</a>
+                            <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $currentPage - 1 ?>&id_category=<?= $id_category ?>">&laquo;</a>
                         </li>
                         <?php
                         for ($page = 1; $page <= $nbePages; $page++) { ?>
                             <li class="page-item <?php if ($page == $currentPage) { ?> active <?php } ?>">
-                                <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $page ?>"><?= $page ?></a>
+                                <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $page ?>&id_category=<?= $id_category ?>"><?= $page ?></a>
                             </li>
                         <?php
                         }
@@ -75,7 +76,7 @@
                         <li class="page-item <?php if ($currentPage == $nbePages) { ?>
                             disabled
                         <?php } ?>">
-                            <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $currentPage + 1 ?>">&raquo;</a>
+                            <a class="page-link" href="/controllers/frontListVehicles-ctrl.php?page=<?= $currentPage + 1 ?>&id_category=<?= $id_category ?>">&raquo;</a>
                         </li>
                     </ul>
                 </div>
