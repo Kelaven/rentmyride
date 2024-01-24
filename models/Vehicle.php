@@ -217,12 +217,13 @@ class Vehicle
      * $perPages = false signifie que l'on veut afficher tous les véhicules sur la même page.
      * $firstVehicle est utilisé pour paginer la liste des véhicules : 0 place le premier véhicule sur la première page.
      * $id_category = null signifie que l'utilisateur n'a pas choisi d'afficher les résultats selon une catégorie en particulier, on doit donc afficher tous les véhicules sans filtre
+     * $search = false signifie que l'utilisateur ne recherche pas de modèle en particulier 
      * 
      * @param int $clickAscOrDesc
      * 
      * @return [type]
      */
-    public static function getAll(bool $isArchived = false, int $clickAscOrDesc = 1, bool $perPages = false, int $firstVehicle = 0, null|int $id_category = null): array|false
+    public static function getAll(bool $isArchived = false, int $clickAscOrDesc = 1, bool $perPages = false, int $firstVehicle = 0, null|int $id_category = null, bool|string $search = false): array|false
     {
         $pdo = Database::connect();
 
@@ -238,6 +239,10 @@ class Vehicle
 
         if (!empty($id_category)) { // si l'utilisateur choisi un filtre, c'est à dire afficher une catégorie en particulier
             $sql = $sql . ' AND `categories`.`id_category` = :id_category';
+        }
+
+        if ($search !== false) {
+            $sql = $sql . ' AND `model` LIKE :search';
         }
 
         if ($clickAscOrDesc === 2 && $perPages === false) { // si on veut afficher les véhicules par catégories dans leur ordre décroissant (&& fait en sorte que ça fonctionne uniqument lorsque l'on a pas besoin de paginer donc dans le dashboard et pas la vue)
@@ -258,6 +263,10 @@ class Vehicle
         }
         if ($perPages === true) {
             $sth->bindValue(':firstVehicle', $firstVehicle, PDO::PARAM_INT);
+        }
+
+        if ($search !== false) {
+            $sth->bindValue(':search', $search);
         }
 
         $result = $sth->execute();
@@ -411,4 +420,23 @@ class Vehicle
 
         return $result;
     }
+
+    // // ! méthode pour rechercher un modèle de véhicule
+    // public static function search(string $search)
+    // {
+    //     $pdo = Database::connect();
+
+    //     $sql = 'SELECT * FROM `vehicles`
+    //     WHERE `model` LIKE :search;';
+
+    //     $sth = $pdo->prepare($sql);
+
+    //     $sth->bindValue(':search', $search);
+
+    //     $result = $sth->execute();
+
+    //     $result = $sth->fetchAll(PDO::FETCH_OBJ);
+
+    //     return $result;
+    // }
 }

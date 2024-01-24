@@ -16,25 +16,39 @@
             </div>
         </div>
         <div class="row w-100 justify-content-center">
-            <form method="GET">
-                <div class="form-group form-group--frontListVehicles">
-                    <label for="id_category" class="form-label">Filtrer par catégories :</label>
-                    <div class="d-flex">
-                        <select class="form-select form-select--frontListVehicles" id="id_category" name="id_category">
-                            <?= $error['id_category'] ?? '' ?>
-                            <option value="" selected disabled>Toutes les catégories</option>
-                            <?php
-                            foreach ($categories as $category) {
-                            ?>
-                                <option value="<?= $category->id_category ?>" <?php if ($category->id_category == $id_category && !empty($id_category)) { ?> selected <?php } ?>> <?= ucfirst($category->name) ?> </option>
-                            <?php }
-                            ?>
-                        </select>
-                        <button type="submit" class="btn btn-dark">Filtrer</button>
+            <div class="col-6">
+                <form method="GET">
+                    <div class="form-group form-group--frontListVehicles">
+                        <label for="id_category" class="form-label">Filtrer par catégories :</label>
+                        <div class="d-flex justify-content-between">
+                            <div class="d-flex">
+                                <select class="form-select form-select--frontListVehicles" id="id_category" name="id_category">
+                                    <?= $error['id_category'] ?? '' ?>
+                                    <option value="" selected disabled>Toutes les catégories</option>
+                                    <?php
+                                    foreach ($categories as $category) {
+                                    ?>
+                                        <option value="<?= $category->id_category ?>" <?php if ($category->id_category == $id_category && !empty($id_category)) { ?> selected <?php } ?>> <?= ucfirst($category->name) ?> </option>
+                                    <?php }
+                                    ?>
+                                </select>
+                                <button type="submit" class="btn btn-dark">Filtrer</button>
+                            </div>
+                        </div>
+                        <small><a href="/controllers/frontListVehicles-ctrl.php">Afficher toutes les catégories</a></small>
                     </div>
-                    <small><a href="/controllers/frontListVehicles-ctrl.php">Afficher toutes les catégories</a></small>
+                </form>
+            </div>
+            <div class="col-6">
+                <div class="d-flex justify-content-end">
+                    <form method="GET" class="d-flex pt-4 mt-xl-2">
+                        <input id="search" name="search" class="form-control w-75" type="search" placeholder="Recherche de modèle">
+                        <button class="btn btn-dark my-2 my-sm-0" type="submit">Rechercher</button>
+                    </form>
                 </div>
-            </form>
+            </div>
+        </div>
+        <div class="row w-100">
             <?php
             foreach ($vehicles as $vehicle) { ?>
                 <div class="col-12 col-md-6 col-xl-3 d-flex justify-content-center text-center py-4">
@@ -56,6 +70,7 @@
             <?php }
             ?>
         </div>
+
         <div class="row">
             <div class="col py-4">
                 <div>
