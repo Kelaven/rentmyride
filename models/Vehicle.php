@@ -280,7 +280,7 @@ class Vehicle
             $sql = $sql . ' AND `vehicles`.`deleted_at` IS NOT NULL';
         }
 
-        if ($clickAscOrDesc === 2 && $perPages === false) { // si on veut afficher les véhicules par catégories dans leur ordre décroissant (&& fait en sorte que ça fonctionne que lorsque l'on a pas besoin de paginer donc dans le dashboard et pas la vue)
+        if ($clickAscOrDesc === 2 && $perPages === false) { // si on veut afficher les véhicules par catégories dans leur ordre décroissant (&& fait en sorte que ça fonctionne uniqument lorsque l'on a pas besoin de paginer donc dans le dashboard et pas la vue)
             $sql = $sql . ' ORDER BY `categories`.`name` DESC';
         } elseif ($clickAscOrDesc !== 2 && $perPages === false) {
             $sql = $sql . ' ORDER BY `categories`.`name` ASC';
