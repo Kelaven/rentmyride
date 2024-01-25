@@ -55,7 +55,7 @@
                         <div class="card-body">
                             <h4 class="card-title pt-3"><?= $vehicle->name ?? '' ?></h4>
                             <h5 class="card-text py-3"><?= $vehicle->brand . ' ' . $vehicle->model ?></h5>
-                            <a href="#" class="btn btn-outline-primary">Réserver</a>
+                            <a href="/controllers/frontRents-ctrl.php" class="btn btn-outline-primary">Réserver</a>
                         </div>
                     </div>
                 </div>

@@ -70,3 +70,11 @@ h5{
         max-width: 100vw;
     }
 }
+
+/* ! rents */
+
+@media (max-width: 768px) {
+    #rents__card{
+        width: 90vw;
+    }
+}
