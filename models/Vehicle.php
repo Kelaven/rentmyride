@@ -413,30 +413,12 @@ class Vehicle
         if ($search !== "") {
             $sth->bindValue(':search', '%' . $search . '%');
         }
-        
+
         $result = $sth->execute();
 
         $result = $sth->fetchColumn(); // rowCount ne s'utilise pas sur du SELECT donc on utilise fetchColumn()
 
         return $result;
     }
-
-    // // ! méthode pour rechercher un modèle de véhicule
-    // public static function search(string $search)
-    // {
-    //     $pdo = Database::connect();
-
-    //     $sql = 'SELECT * FROM `vehicles`
-    //     WHERE `model` LIKE :search;';
-
-    //     $sth = $pdo->prepare($sql);
-
-    //     $sth->bindValue(':search', $search);
-
-    //     $result = $sth->execute();
-
-    //     $result = $sth->fetchAll(PDO::FETCH_OBJ);
-
-    //     return $result;
-    // }
+    
 }
