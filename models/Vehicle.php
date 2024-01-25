@@ -223,13 +223,13 @@ class Vehicle
      * 
      * @return [type]
      */
-    public static function getAll(bool $isArchived = false, int $clickAscOrDesc = 1, bool $perPages = false, int $firstVehicle = 0, null|int $id_category = null, bool|string $search = false): array|false
+    public static function getAll(bool $isArchived = false, int $clickAscOrDesc = 1, bool $perPages = false, int $firstVehicle = 0, int $id_category = 0, string $search = ""): array|false
     {
         $pdo = Database::connect();
 
         $sql = 'SELECT * FROM `vehicles` -- requête de base : afficher tous les véhicules et leur catégorie
         JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`';
-        $sql = $sql . 'WHERE 1 = 1';
+        $sql = $sql . ' WHERE 1 = 1';
 
         if ($isArchived === false) { // si on ne veut pas afficher les véhicules archivés
             $sql = $sql . ' AND `vehicles`.`deleted_at` IS NULL';
@@ -237,12 +237,12 @@ class Vehicle
             $sql = $sql . ' AND `vehicles`.`deleted_at` IS NOT NULL';
         }
 
-        if (!empty($id_category)) { // si l'utilisateur choisi un filtre, c'est à dire afficher une catégorie en particulier
+        if ($id_category !== 0) { // si l'utilisateur choisi un filtre, c'est à dire afficher une catégorie en particulier
             $sql = $sql . ' AND `categories`.`id_category` = :id_category';
         }
 
-        if ($search !== false) {
-            $sql = $sql . ' AND `model` LIKE :search';
+        if ($search !== "") {
+            $sql = $sql . ' AND (`vehicles`.`model` LIKE :search OR `vehicles`.`brand` LIKE :search OR `categories`.`name` LIKE :search)';
         }
 
         if ($clickAscOrDesc === 2 && $perPages === false) { // si on veut afficher les véhicules par catégories dans leur ordre décroissant (&& fait en sorte que ça fonctionne uniqument lorsque l'on a pas besoin de paginer donc dans le dashboard et pas la vue)
@@ -258,15 +258,16 @@ class Vehicle
 
         $sth = $pdo->prepare($sql);
 
-        if (!empty($id_category)) {
+        if ($id_category !== 0) {
             $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT);
         }
+        // dd($firstVehicle);
         if ($perPages === true) {
             $sth->bindValue(':firstVehicle', $firstVehicle, PDO::PARAM_INT);
         }
 
-        if ($search !== false) {
-            $sth->bindValue(':search', $search);
+        if ($search !== "") {
+            $sth->bindValue(':search', '%' . $search . '%');
         }
 
         $result = $sth->execute();
@@ -387,34 +388,33 @@ class Vehicle
     }
 
     // ! méthode count nbe vehicles (non archivés)
-    public static function vehiclesCount(bool|int $id_category = false): int // si $id_category est false alors l'utilisateur ne filtre pas les résultats donc il faut compter les véhicules de toutes les catégories
+    public static function vehiclesCount(int $id_category = 0, string $search = ""): int // si $id_category est false alors l'utilisateur ne filtre pas les résultats donc il faut compter les véhicules de toutes les catégories
     {
         $pdo = Database::connect();
 
-        // $sql = 'SELECT `id_vehicle` 
-        // FROM `vehicles` 
-        // WHERE `deleted_at` IS NULL;'; // requete qui était utilisée pour rowCount() mais comme on ne doit pas utiliser cette méthode avec SELECT, je dois utiliser la requete ci-dessous :
+        $sql = 'SELECT COUNT(*) FROM `vehicles`
+        JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`';
+        $sql = $sql . ' WHERE 1 = 1';
 
-        if ($id_category === false) {
-            $sql = 'SELECT COUNT(*) FROM `vehicles`
-            JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-            WHERE `deleted_at` IS NULL;';
+        if ($id_category !== 0) {
+            $sql = $sql . ' AND `deleted_at` IS NULL AND `categories`.`id_category` = :id_category;';
         } else { // si l'utilisateur sélectionne un filtre il faut compter les véhicules du filtre en question uniquement
-            $sql = 'SELECT COUNT(*) FROM `vehicles`
-            JOIN `categories` ON `vehicles`.`id_category` = `categories`.`id_category`
-            WHERE `deleted_at` IS NULL AND `categories`.`id_category` = :id_category;';
+            $sql = $sql . ' AND `deleted_at` IS NULL;';
+        }
+        if ($search !== "") {
+            $sql = $sql . ' AND (`vehicles`.`model` LIKE :search OR `vehicles`.`brand` LIKE :search OR `categories`.`name` LIKE :search)';
         }
 
         $sth = $pdo->prepare($sql);
 
-        if ($id_category) {
+        if ($id_category !== 0) {
             $sth->bindValue(':id_category', $id_category, PDO::PARAM_INT); // car l'utilisateur rentre de nouveau une donnée, je la récupère sous form d'entier
         }
+        if ($search !== "") {
+            $sth->bindValue(':search', '%' . $search . '%');
+        }
+        
         $result = $sth->execute();
-
-        // $sth = $pdo->query($sql); // la méthode query prépare et exécute en même temps à condition qu'il n'y ait pas de marqueurs
-
-        // $result = $sth->rowCount(); // compter le nombre de véhicules et retourner un entier
 
         $result = $sth->fetchColumn(); // rowCount ne s'utilise pas sur du SELECT donc on utilise fetchColumn()
 

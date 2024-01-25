@@ -61,6 +61,12 @@ h5{
     height: 200px;
     object-fit: cover;
 }
-.form-select--frontListVehicles{
-    max-width: 16vw;
+
+#search, #id_category{
+    max-width: 20vw;
+}
+@media (max-width: 1200px) {
+    #search, #id_category{
+        max-width: 100vw;
+    }
 }
